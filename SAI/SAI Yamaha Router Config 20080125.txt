@@ -1,0 +1,233 @@
+# =====================
+# SAI KK YAMAHA RTX1500 
+# =====================
+# ===== CURRENT WORKING 3 FEB 2008 =======
+# show config 
+# RTX1500 Rev.8.03.68 (Mon Dec 10 11:06:37 2007)
+# MAC Address : 00:a0:de:34:83:33, 00:a0:de:34:83:34, 00:a0:de:34:83:35, 
+# Memory 128Mbytes, 3LAN, 2BRI
+# main:  RTX1500 ver=c1 serial=N0Y009527 MAC-Address=00:a0:de:34:83:33 MAC-Address=00:a0:de:34:83:34 MAC-Address=00:a0:de:34:83:35
+# Reporting Date: Feb 3 21:34:50 2008
+login password *
+administrator password *
+security class 1 on on
+console character ascii
+login timer 1200
+ip route default gateway pp 1
+ip filter source-route on
+ip filter directed-broadcast on
+ip lan1 address 192.168.0.1/24
+ip lan3 address 61.197.227.145/29
+pp select 1
+ pp always-on on
+ pppoe use lan2
+ pp auth accept pap
+ pp auth myname is7820381@fb9.sphere.ne.jp Lapostal
+ ppp lcp mru on 1454
+ ip pp secure filter in 1030 1031 1032 1033 1034 1035 1036 1037 1038 1039 1040 1041 1042 1043 1044 1045 2000 dynamic 201 202 203 204 205 206 207 208 209
+ ip pp secure filter out 1010 1011 1012 1013 1014 1015 3000 dynamic 108 100 101 102 107 105 106
+ ip pp intrusion detection in on
+ ip pp nat descriptor 1
+ pp enable 1
+ip filter 1010 reject * * udp,tcp 135 *
+ip filter 1011 reject * * udp,tcp * 135
+ip filter 1012 reject * * udp,tcp netbios_ns-netbios_ssn *
+ip filter 1013 reject * * udp,tcp * netbios_ns-netbios_ssn
+ip filter 1014 reject * * udp,tcp 445 *
+ip filter 1015 reject * * udp,tcp * 445
+ip filter 1020 reject 192.168.0.0/24 *
+ip filter 1030 pass * 192.168.0.0/24 icmp
+ip filter 1031 pass * 61.197.227.145 tcpflag=0x0002/0x0fff * www
+ip filter 1032 pass * 61.197.227.146 tcpflag=0x0002/0x0fff * www
+ip filter 1033 pass * 61.197.227.147 tcpflag=0x0002/0x0fff * www
+ip filter 1034 pass * 61.197.227.148 tcpflag=0x0002/0x0fff * www
+ip filter 1035 pass * 61.197.227.149 tcpflag=0x0002/0x0fff * www
+ip filter 1036 pass * 61.197.227.150 tcpflag=0x0002/0x0fff * www
+ip filter 1037 pass * 61.197.227.148 tcpflag=0x0002/0x0fff * 21
+ip filter 1038 pass * 61.197.227.149 tcpflag=0x0002/0x0fff * 21
+ip filter 1039 pass * 61.197.227.150 tcpflag=0x0002/0x0fff * 21
+ip filter 1040 pass * 61.197.227.146 tcp,udp * 22,https
+ip filter 1041 pass * 61.197.227.147 tcp,udp * 22,smtp,pop3,imap2
+ip filter 1042 pass * 61.197.227.148 tcp,udp * 22,domain,smtp,pop3,imap2,https
+ip filter 1043 pass * 61.197.227.149 tcp,udp * 22,domain,https,5222,5223,8008
+ip filter 1044 pass * 61.197.227.150 tcp,udp * 22,5003,3283,5432,5900,5988
+ip filter 1045 pass * * tcp ftpdata *
+ip filter 1046 pass * * tcp * smtp,pop3
+ip filter 1047 pass * * tcp * ident
+ip filter 2000 reject * *
+ip filter 3000 pass * *
+ip filter dynamic 100 * * ftp
+ip filter dynamic 101 * * www
+ip filter dynamic 102 * * domain
+ip filter dynamic 103 * * smtp
+ip filter dynamic 104 * * pop3
+ip filter dynamic 105 * * tcp
+ip filter dynamic 106 * * udp
+ip filter dynamic 107 * * telnet
+ip filter dynamic 108 * * filter 1046 in 1047
+ip filter dynamic 200 192.168.0.0/24 * telnet
+ip filter dynamic 201 * 61.197.227.145 www
+ip filter dynamic 202 * 61.197.227.146 www
+ip filter dynamic 203 * 61.197.227.147 www
+ip filter dynamic 204 * 61.197.227.148 www
+ip filter dynamic 205 * 61.197.227.149 www
+ip filter dynamic 206 * 61.197.227.150 www
+ip filter dynamic 207 * 61.197.227.148 ftp
+ip filter dynamic 208 * 61.197.227.149 ftp
+ip filter dynamic 209 * 61.197.227.150 ftp
+nat descriptor type 1 masquerade
+nat descriptor address outer 1 61.197.227.145
+nat descriptor address inner 1 192.168.0.1-192.168.0.254
+syslog notice on
+dhcp service server
+dhcp scope 1 192.168.0.50-192.168.0.100/24 gateway 192.168.0.1
+dhcp scope option 1 domain=saico.com wins_server=61.197.227.149
+dns server 61.197.227.148 202.239.113.18
+dns private address spoof on
+# ============= END CURRENT ================
+
+# ============== ANNOTATED =================
+# Basics
+security class 1 on on
+console character ascii
+login timer 1200
+
+# LAN Interface Settings
+## Use the IP that will be the default gateway...
+ip lan1 address 192.168.0.1/24
+
+# Need to set proxyarp on if the pptp range is in the same range as the dhcp range
+# ip lan1 proxyarp on
+
+#
+# DMZ Interface Settings
+## Use the IP that will be the default gateway. Not .144, which is the network address. 
+ip lan3 address 61.197.227.145/29
+
+#
+# WAN Interface Settings
+## Setup WAN dialup, MTU, IDS, default gateway routing...
+pp select 1
+pp always-on on
+pppoe use lan2
+pp auth accept pap chap mschap-v2
+pp auth myname is7820381@fb9.sphere.ne.jp Lapostal
+ppp lcp mru on 1454
+ppp ipcp msext on
+ip pp mtu 1454
+ip pp nat descriptor 1
+ip pp intrusion detection in on
+pp enable 1
+ip route default gateway pp 1
+
+#
+# NAT Settings
+## DHCP address range will be smaller than the full NAT address range. Do not put 0 or 255, the net or bcast addresses
+nat descriptor type 1 masquerade
+nat descriptor address outer 1 61.197.227.145
+nat descriptor address inner 1 192.168.0.1-192.168.0.254
+
+# ==== DHCP What worked... and what I removed on 29 jan
+dhcp service server
+dhcp scope 1 192.168.0.50-192.168.0.100/24 gateway 192.168.0.1
+dhcp scope option 1 domain=saico.com wins_server=61.197.227.149
+# ==== DHCP WHat I added 29 Jan
+no dhcp service server
+no dhcp scope 1 192.168.0.50-192.168.0.100/24 gateway 192.168.0.1
+no dhcp scope option 1 domain=saico.com wins_server=61.197.227.149
+dhcp relay server 61.197.227.149
+# === DHCP - BUT relay server did NOT work...BECAUSE it was incorrect. This is correct: 
+dhcp service relay
+dhcp relay select all
+dhcp relay server 61.197.227.149 61.197.227.147
+# ==== DHCP - how to remove the relay
+no dhcp service relay
+no dhcp relay select all
+no dhcp relay server 61.197.227.149 61.197.227.147
+# ==================
+
+#
+# DNS Settings
+# Separate servers with a space, and these will be given via DHCP to clients...
+dns server 61.197.227.148 202.239.113.18
+dns private address spoof on
+
+#
+# Packet Filters
+#
+ip filter source-route on
+ip filter directed-broadcast on
+ip filter 1010 reject * * udp,tcp 135 *
+ip filter 1011 reject * * udp,tcp * 135
+ip filter 1012 reject * * udp,tcp netbios_ns-netbios_ssn *
+ip filter 1013 reject * * udp,tcp * netbios_ns-netbios_ssn
+ip filter 1014 reject * * udp,tcp 445 *
+ip filter 1015 reject * * udp,tcp * 445
+ip filter 1020 reject 192.168.0.0/24 *
+ip filter 1030 pass * 192.168.0.0/24 icmp
+ip filter 1031 pass * 61.197.227.145 tcpflag=0x0002/0x0fff * www
+ip filter 1032 pass * 61.197.227.146 tcpflag=0x0002/0x0fff * www
+ip filter 1033 pass * 61.197.227.147 tcpflag=0x0002/0x0fff * www
+ip filter 1034 pass * 61.197.227.148 tcpflag=0x0002/0x0fff * www
+ip filter 1035 pass * 61.197.227.149 tcpflag=0x0002/0x0fff * www
+ip filter 1036 pass * 61.197.227.150 tcpflag=0x0002/0x0fff * www
+ip filter 1037 pass * 61.197.227.148 tcpflag=0x0002/0x0fff * 21
+ip filter 1038 pass * 61.197.227.149 tcpflag=0x0002/0x0fff * 21
+ip filter 1039 pass * 61.197.227.150 tcpflag=0x0002/0x0fff * 21
+
+ip filter 1040 pass * 61.197.227.146 tcp,udp * 22,443
+ip filter 1041 pass * 61.197.227.147 tcp,udp * 22,smtp,pop3,143
+ip filter 1042 pass * 61.197.227.148 tcp,udp * 22,domain,smtp,pop3,143,443
+ip filter 1043 pass * 61.197.227.149 tcp,udp * 22,domain,443,5222,5223,8008
+ip filter 1044 pass * 61.197.227.150 tcp,udp * 22,5003,3283,5432,5900,5988
+
+# 5003 - fmp
+# 3283,5432,5900,5988 - ard
+
+ip filter 1045 pass * * tcp ftpdata *
+ip filter 1046 pass * * tcp * smtp,pop3
+ip filter 1047 pass * * tcp * ident
+
+
+ip filter 2000 reject * *
+ip filter 3000 pass * *
+ip filter dynamic 100 * * ftp
+ip filter dynamic 101 * * www
+ip filter dynamic 102 * * domain
+ip filter dynamic 103 * * smtp
+ip filter dynamic 104 * * pop3
+ip filter dynamic 105 * * tcp
+ip filter dynamic 106 * * udp
+ip filter dynamic 107 * * telnet
+ip filter dynamic 108 * * filter 1046 in 1047
+
+======= ERRORED OUT ===============
+ip filter dynamic 108 * * 22
+ip filter dynamic 109 * * 143
+ip filter dynamic 110 * * 5222
+ip filter dynamic 111 * * 5223
+ip filter dynamic 112 * * 443
+===================================
+
+ip filter dynamic 200 192.168.0.0/24 * telnet
+ip filter dynamic 201 * 61.197.227.145 www
+ip filter dynamic 202 * 61.197.227.146 www
+ip filter dynamic 203 * 61.197.227.147 www
+ip filter dynamic 204 * 61.197.227.148 www
+ip filter dynamic 205 * 61.197.227.149 www
+ip filter dynamic 206 * 61.197.227.150 www
+ip filter dynamic 207 * 61.197.227.148 ftp
+ip filter dynamic 208 * 61.197.227.149 ftp
+ip filter dynamic 209 * 61.197.227.150 ftp
+
+# Leave all traffic to DMZ open from trusted, by NOT putting ip lan3 secure...
+# ip lan3 secure filter in 2000
+# ip lan3 secure filter out 3000 dynamic 100 101 200
+
+# Set up incoming and outgoing filters, in this case, preventing a lot coming in, and preventing some going out. 
+# statics first, dynamics second. Order of numbers is order of load. If filter unused here, it will be ignored even if it is defined above...
+pp select 1
+ip pp secure filter in 1030 1031 1032 1033 1034 1035 1036 1037 1038 1039 1040 1041 1042 1043 1044 1045 2000 dynamic 201 202 203 204 205 206 207 208 209
+
+ip pp secure filter out 1010 1011 1012 1013 1014 1015 3000 dynamic 108 100 101 102 107 105 106
+pp enable 1

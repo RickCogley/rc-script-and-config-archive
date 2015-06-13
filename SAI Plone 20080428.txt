@@ -1,0 +1,132 @@
+
+li22-142:/etc/apache2/sites-enabled# cat 001-nexus.saico.com  
+<VirtualHost *:80>
+ ServerAlias   nexus.saico.com
+ ServerAdmin   sai.systems@saico.com
+ ServerSignature On
+
+ CustomLog     /var/log/apache2/nexus.saico.com-access.log combined
+ ErrorLog      /var/log/apache2/nexus.saico.com-error.log
+ LogLevel warn
+
+ <IfModule mod_rewrite.c>
+   RewriteEngine On
+   RewriteRule ^/(.*) \
+      http://localhost:8181/VirtualHostBase/http/nexus.saico.com:80/VirtualHostRoot/$1 [L,P]
+ </IfModule>
+</VirtualHost>
+
+li22-142:/etc/apache2/sites-enabled# cat 002-share.saico.com 
+<VirtualHost *:80>
+ ServerAlias   share.saico.com
+ ServerAdmin   sai.systems@saico.com
+ ServerSignature On
+
+ CustomLog     /var/log/apache2/share.saico.com-access.log combined
+ ErrorLog      /var/log/apache2/share.saico.com-error.log
+ LogLevel warn
+
+ <IfModule mod_rewrite.c>
+   RewriteEngine On
+   RewriteRule ^/(.*) \
+      http://localhost:8182/VirtualHostBase/http/share.saico.com:80/VirtualHostRoot/$1 [L,P]
+ </IfModule>
+</VirtualHost>
+
+* Also, several config files need to be loaded, and this assumes that the correct apache modules are loaded too: 
+
+li22-142:/etc/apache2/conf.d# cat deflate.conf 
+<IfModule mod_deflate.c>
+ DeflateCompressionLevel 3
+
+ DeflateFilterNote Input instream
+ DeflateFilterNote Output outstream
+ DeflateFilterNote Ratio ratio
+
+ LogFormat '"%r" %{outstream}n/%{instream}n (%{ratio}n%%)' deflate
+
+ # Netscape 4.x has some problems...
+ BrowserMatch ^Mozilla/4 gzip-only-text/html
+
+ # Netscape 4.06-4.08 have some more problems
+ BrowserMatch ^Mozilla/4\.0[678] no-gzip
+
+ # MSIE masquerades as Netscape, but it is fine
+ #BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+
+ # NOTE: Due to a bug in mod_setenvif up to Apache 2.0.48
+ # the above regex won't work. You can use the following
+ # workaround to get the desired effect:
+ BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+
+ # Don't compress images, java scripts and style sheets
+ SetEnvIfNoCase Request_URI \
+   \.(?:gif|jpe?g|png|js|css)$ no-gzip dont-vary
+
+ # Make sure proxies don't deliver the wrong content
+ # this needs mod_headers but it's very important
+ # so I don't add a IfModule around it
+ Header append Vary User-Agent env=!dont-vary
+
+</IfModule>
+
+
+
+li22-142:/etc/apache2/conf.d# cat namevirtualhost.conf 
+NameVirtualHost *:80
+<IfModule mod_ssl.c>
+  NameVirtualHost *:443
+</IfModule>
+
+
+li22-142:/etc/apache2/conf.d# cat proxy.conf 
+<IfModule mod_proxy.c>
+
+      #turning ProxyRequests on and allowing proxying from all may allow
+      #spammers to use your proxy to send email.
+
+      ProxyRequests Off
+
+      #<Proxy *>
+      #       Order deny,allow
+      #       Deny from all
+      #       #Allow from .your_domain.com
+      #</Proxy>
+
+      # allow to connect to localhost with port ending with 80 and 90 (www, webdav)
+      # the having at least 2 digets before the 80 or 90
+      <ProxyMatch http://localhost:[0-9]{2,}?[8|9]0/.*>
+              Order deny,allow
+              Allow from all
+      </ProxyMatch>
+
+      # Enable/disable the handling of HTTP/1.1 "Via:" headers.
+      # ("Full" adds the server version; "Block" removes all outgoing Via: headers)
+      # Set to one of: Off | On | Full | Block
+
+      ProxyVia On
+
+      # To enable the cache as well, edit and uncomment the following lines:
+      # (no cacheing without CacheRoot)
+
+      CacheRoot "/var/cache/apache2/proxy"
+      # 300MB
+      # CacheSize 307200
+      # in hours
+      # CacheGcInterval 4
+      CacheMaxExpire 24
+      CacheLastModifiedFactor 0.1
+      CacheDefaultExpire 1
+      # CacheForceCompletion 100
+      # Again, you probably should change this.
+      #NoCache a_domain.com another_domain.edu joes.garage_sale.com
+
+</IfModule>
+
+* Here's a list of the enabled modules, which would be required to recreate this: 
+
+li22-142:/etc/apache2/mods-enabled# ls
+alias.load	   authz_groupfile.load  cache.load	dir.load	mime.load	  php5.conf	   rewrite.load
+auth_basic.load     authz_host.load	 cgi.load	disk_cache.load  mime_magic.conf   php5.load	   setenvif.load
+authn_file.load     authz_user.load	 deflate.load	env.load	mime_magic.load   proxy.load	   status.load
+authz_default.load  autoindex.load	 dir.conf	headers.load	negotiation.load  proxy_http.load

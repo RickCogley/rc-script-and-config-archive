@@ -1,0 +1,47 @@
+Order matters inside supertag. These are optional. Use 010 leading to sort. 
+Does BB have owner concept? 
+
+== 010 name and salutation ==
+
+Last Name Furigana (Text)
+Last Name Jp (Text)
+First Name Furigana (Text)
+First Name Jp (Text)
+Salutation (Choice)
+Salutation Jp (Choice)
+
+== 020 individual ==
+
+Job Title Jp (Text)
+Department (Text)
+Department Jp (Text)
+Industry (Text)
+Birthdate (Text)
+Assistant (Text)
+Assistant Phone (Text)
+
+== 030 esolia ==
+
+Assigned To (Assigned to:)
+Key (Yes or no) [[took out person since it's either individual or company]]
+Active (Yes or no) [[some manipulation is needed from the "Retired" field since it's logically opposite]]
+
+== 040 correspondence ==
+
+Preferred Language (Multiple choice)
+Newsletter (Yes or no)
+Christmas (Yes or no)
+Nenga Card (Yes or no)
+
+== zz Legacy ==
+
+Salesforce Contact Id (Text)
+Contact Owner (Text)
+Contact Owner Alias (Text)
+Owner Role Display (Text)
+Owner Role Name (Text)
+Created Date (Date and time)
+Created By (Text)
+Created Alias (Text)
+Last Activity (Date and time)
+Last Modified Date (Date and time)

@@ -1,0 +1,152 @@
+# RTX1200 Rev.10.01.29 (Wed Feb  9 17:21:33 2011)
+# MAC Address : 00:a0:de:67:21:f1, 00:a0:de:67:21:f2, 00:a0:de:67:21:f3
+# Memory 128Mbytes, 3LAN, 1BRI
+# main:  RTX1200 ver=b0 serial=D26044519 MAC-Address=00:a0:de:67:21:f1 MAC-Address=00:a0:de:67:21:f2 MAC-Address=00:a0:de:67:21:f3
+# Reporting Date: Jul 10 00:22:14 2011
+login password *
+administrator password *
+login user esolia *
+security class 1 on on
+console character ascii
+console columns 200
+console lines infinity
+console prompt SJ-YRTX1200=:
+console info off
+login timer 1200
+ip route default gateway pp 1
+ip filter source-route on
+ip filter directed-broadcast on
+ip lan1 address 10.21.10.2/24
+ip lan1 proxyarp on
+speed lan2 70m
+queue lan2 type priority
+queue lan2 class filter list 1 2 3
+ip lan3 address 114.160.31.241/29
+pp select 1
+ pp always-on on
+ queue pp class filter list 1 2 3
+ pppoe use lan2
+ pppoe auto disconnect off
+ pp auth accept pap chap
+ pp auth myname w29f87cj@bizf.ocn.ne.jp fcwt96
+ ppp lcp mru on 1454
+ ppp ipcp msext on
+ ip pp mtu 1454
+ ip pp secure filter in 1030 1031 1032 1033 1039 1040 1042 1043 1044 1045 1050 1051 1052 1060 1061 1062 2000 dynamic 202
+ ip pp secure filter out 1010 1011 1012 1013 1014 1015 3000 dynamic 108 100 101 102 107 105 106 200 300 200098
+ ip pp intrusion detection in on
+ ip pp intrusion detection in ip on reject=on
+ ip pp intrusion detection in ip-option on reject=on
+ ip pp intrusion detection in fragment on reject=on
+ ip pp intrusion detection in icmp on reject=on
+ ip pp intrusion detection in udp on reject=on
+ ip pp intrusion detection in tcp on reject=on
+ ip pp intrusion detection in default off
+ ip pp intrusion detection out on
+ ip pp intrusion detection out ftp on reject=on
+ ip pp intrusion detection out winny on reject=on
+ ip pp intrusion detection out share on reject=on
+ ip pp intrusion detection out default off
+ ip pp nat descriptor 1
+ pp enable 1
+pp select anonymous
+ pp bind tunnel1-tunnel3
+ pp auth request mschap-v2
+ pp auth accept mschap mschap-v2
+ pp auth username esolia eSolia1!
+ pp auth username solta SoltaJapan1!
+ ppp ipcp ipaddress on
+ ppp ccp type mppe-any
+ ip pp address 10.21.10.1/24
+ ip pp remote address pool 10.21.10.241-10.21.10.249
+ pptp service type server
+ pp enable anonymous
+tunnel select 1
+ tunnel encapsulation pptp
+ tunnel enable 1
+tunnel select 2
+ tunnel encapsulation pptp
+ tunnel enable 2
+tunnel select 3
+ tunnel encapsulation pptp
+ tunnel enable 3
+ip filter 1010 reject * * udp,tcp 135 *
+ip filter 1011 reject * * udp,tcp * 135
+ip filter 1012 reject * * udp,tcp netbios_ns-netbios_ssn *
+ip filter 1013 reject * * udp,tcp * netbios_ns-netbios_ssn
+ip filter 1014 reject * * udp,tcp 445 *
+ip filter 1015 reject * * udp,tcp * 445
+ip filter 1030 pass * 114.160.31.241 tcpflag=0x0002/0x0fff * www
+ip filter 1031 pass * 114.160.31.242 tcpflag=0x0002/0x0fff * www
+ip filter 1032 pass * 114.160.31.243 tcpflag=0x0002/0x0fff * www
+ip filter 1033 pass * 114.160.31.244 tcpflag=0x0002/0x0fff * www
+ip filter 1039 pass * 114.160.31.241 tcp,udp * 22,2299,7799,domain,smtp,www,1723
+ip filter 1040 pass * 10.21.10.2 tcp,udp * 22,2299,7799,domain,smtp,www,1723
+ip filter 1042 pass * 114.160.31.243 tcp,udp * 2299,7799,domain,smtp
+ip filter 1043 pass * 114.160.31.244 tcp,udp * 22,https,5222,5223,8008,5003,3283,5432,5900,5988
+ip filter 1044 pass * 114.160.31.241 gre * *
+ip filter 1045 pass * 10.21.10.2 gre * *
+ip filter 1050 pass * 114.160.31.242 tcp,udp * https,18080
+ip filter 1051 pass * 114.160.31.243 tcp,udp * 2299,7799,domain,smtp
+ip filter 1052 pass * 114.160.31.244 tcp,udp * 22,https,5222,5223,8008,5003,3283,5432,5900,5988
+ip filter 1060 pass * * tcp ftpdata *
+ip filter 1061 pass * * tcp * smtp,pop3
+ip filter 1062 pass * * tcp * ident
+ip filter 2000 reject * *
+ip filter 3000 pass * *
+ip filter 200098 reject-nolog * * established
+ip filter dynamic 100 * * ftp
+ip filter dynamic 101 * * www
+ip filter dynamic 102 * * domain
+ip filter dynamic 103 * * smtp
+ip filter dynamic 104 * * pop3
+ip filter dynamic 105 * * tcp
+ip filter dynamic 106 * * udp
+ip filter dynamic 107 * * telnet
+ip filter dynamic 108 * * filter 1046 in 1047
+ip filter dynamic 200 10.81.0.0/24 * telnet
+ip filter dynamic 201 * 114.160.31.242 www
+ip filter dynamic 202 * 114.160.31.244 www
+ip filter dynamic 300 * * ssh
+ip filter dynamic 200098 * * tcp
+nat descriptor log on
+nat descriptor type 1 masquerade
+nat descriptor address outer 1 114.160.31.241
+nat descriptor address inner 1 114.160.31.241 10.21.10.1-10.21.10.254
+nat descriptor masquerade static 1 1 10.21.10.2 tcp 2299
+nat descriptor masquerade static 1 2 10.21.10.2 tcp 22
+nat descriptor masquerade static 1 3 10.21.10.2 tcp 7799
+nat descriptor masquerade static 1 4 10.21.10.2 tcp 1723
+nat descriptor masquerade static 1 5 10.21.10.2 gre
+queue class filter 1 9 ip * * udp 5004-5060 *
+queue class filter 2 9 ip * * tcp 5004-5060 *
+queue class filter 3 9 ip * * udp 30000-31000 *
+syslog notice on
+syslog debug off
+tftp host none
+dhcp service server
+dhcp server rfc2131 compliant except remain-silent
+dhcp scope 1 10.21.10.200-10.21.10.240/24 gateway 10.21.10.2
+dns server 202.234.232.6 221.113.139.250
+dns private address spoof on
+pptp service on
+httpd listen 7799
+httpd timeout 180
+httpd host any
+http revision-up timeout 180
+operation http revision-up permit on
+mail server name 1 esolia.net
+mail server smtp 1 mail.esolia.net smtp-auth systemmail eSolia2011! cram-md5
+mail template 1 1 From:support@esolia.net To:rick@cogley.info "Subject:[SOLTA] Maniera Ginza Yamata RTX1200 Router Notification" notify-wait-time=1
+mail notify 1 1 trigger status all
+sshd service on
+sshd host key generate *
+sftpd host none
+statistics cpu on
+statistics memory on
+statistics flow off
+statistics route off
+statistics nat off
+statistics filter off
+diagnosis config port max-detect 100
+#

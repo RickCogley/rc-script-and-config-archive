@@ -1,0 +1,47 @@
+add 00100 allow ip from any to any via lo*
+add 01000 deny icmp from any to any
+add 01100 deny ip from any to any ipoptions rr
+add 01101 deny ip from any to any ipoptions ts
+add 01102 deny ip from any to any ipoptions lsrr
+add 01103 deny ip from any to any ipoptions ssrr
+add 01200 deny tcp from any to any tcpflags syn,fin
+add 01201 deny tcp from any to any tcpflags syn,rst
+add 01202 deny tcp from any 0 to any
+add 01203 deny tcp from any to any dst-port 0
+add 01204 deny udp from any 0 to any
+add 01205 deny udp from any to any dst-port 0
+add 01206 deny ip from 224.0.0.0/4 to any in
+add 01207 deny ip from 0.0.0.0/8 to any
+add 10100 deny log tcp from any to any dst-port 23,514,513 in setup
+add 10110 deny udp from any to any dst-port 23,514,513 in
+add 10200 deny log tcp from any to any dst-port 20-21 in setup
+add 10210 deny udp from any to any dst-port 20-21 in
+add 10300 deny log tcp from any to any dst-port 3031 in setup
+add 10310 deny udp from any to any dst-port 3031 in
+add 10400 deny log tcp from any to any dst-port 3283 in setup
+add 10410 deny udp from any to any dst-port 3283 in
+add 10500 deny log tcp from any to any dst-port 500,1701,1723,4500,10000 in setup
+add 10510 deny udp from any to any dst-port 500,1701,1723,4500,10000 in
+add 10700 allow tcp from any to any dst-port 3689 in setup
+add 10710 allow udp from any to any dst-port 3689 in
+add 10800 allow tcp from any to any dst-port 5060,5297,16384-16403 in setup
+add 10810 allow udp from any to any dst-port 5060,5297,16384-16403 in
+add 10900 allow tcp from any to any dst-port 548 in setup
+add 10910 allow udp from any to any dst-port 548 in
+add 11000 allow tcp from any to any dst-port 22 in setup
+add 11010 allow udp from any to any dst-port 22 in
+add 11100 allow tcp from any to any dst-port 80 in setup
+add 11110 allow udp from any to any dst-port 80 in
+add 11200 allow tcp from any to any dst-port 5900 in setup
+add 11210 allow udp from any to any dst-port 5900 in
+add 11300 allow tcp from any to any dst-port 515,631 in setup
+add 11310 allow udp from any to any dst-port 515,631 in
+add 11400 allow tcp from any to any dst-port 53,67,68,123,5353 in setup
+add 11410 allow udp from any to any dst-port 53,67,68,123,5353 in
+add 11500 allow tcp from any to any dst-port 139,445 in setup
+add 11510 allow udp from any to any dst-port 139,445 in
+add 11600 allow tcp from any to any dst-port 8770 in setup
+add 11610 allow udp from any to any dst-port 8770 in
+add 63000 allow tcp from any to any in setup
+add 63001 allow udp from any to any dst-port 1-1023 in
+add 65535 allow ip from any to any

@@ -1,0 +1,155 @@
+SAI-RTX=:# show config
+# RTX1500 Rev.8.03.68 (Mon Dec 10 11:06:37 2007)
+# MAC Address : 00:a0:de:34:83:33, 00:a0:de:34:83:34, 00:a0:de:34:83:35,
+# Memory 128Mbytes, 3LAN, 2BRI
+# main:  RTX1500 ver=c1 serial=N0Y009527 MAC-Address=00:a0:de:34:83:33 MAC-Address=00:a0:de:34:83:34 MAC-Address=00:a0:de:34:83:35
+# Reporting Date: Jul 20 14:57:43 2011
+login password *
+administrator password *
+login user saico *
+security class 1 on on
+console character ascii
+console columns 200
+console lines infinity
+console prompt SAI-YRTX=:
+login timer 1200
+ip route default gateway pp 1
+ip filter source-route on
+ip filter directed-broadcast on
+ip lan1 address 192.168.0.1/24
+ip lan3 address 61.197.227.145/29
+pp select 1
+ pp always-on on
+ pppoe use lan2
+ pp auth accept pap
+ pp auth myname is7820381@fb9.sphere.ne.jp Lapostal
+ ppp lcp mru on 1454
+ ppp ipcp msext on
+ ip pp mtu 1454
+ ip pp secure filter in 1030 1031 1032 1033 1034 1035 1036 1037 1038 1039 1040 1041 1042 1043 1044 1060 1045 2000 dynamic 201 202 203 204 205 206 207 208 209
+ ip pp secure filter out 1010 1011 1012 1013 1014 1015 3000 dynamic 108 100 101 102 107 105 106
+ ip pp intrusion detection in on
+ ip pp nat descriptor 2 1
+ pp enable 1
+ip filter 1010 reject * * udp,tcp 135 *
+ip filter 1011 reject * * udp,tcp * 135
+ip filter 1012 reject * * udp,tcp netbios_ns-netbios_ssn *
+ip filter 1013 reject * * udp,tcp * netbios_ns-netbios_ssn
+ip filter 1014 reject * * udp,tcp 445 *
+ip filter 1015 reject * * udp,tcp * 445
+ip filter 1030 pass * 192.168.0.0/24 icmp
+ip filter 1031 pass * 61.197.227.145 tcpflag=0x0002/0x0fff * www
+ip filter 1032 pass * 61.197.227.146 tcpflag=0x0002/0x0fff * www
+ip filter 1033 pass * 61.197.227.147 tcpflag=0x0002/0x0fff * www
+ip filter 1034 pass * 61.197.227.148 tcpflag=0x0002/0x0fff * www
+ip filter 1035 pass-log * 61.197.227.149 tcpflag=0x0002/0x0fff * www
+ip filter 1036 pass * 61.197.227.150 tcpflag=0x0002/0x0fff * www
+ip filter 1037 pass * 61.197.227.148 tcpflag=0x0002/0x0fff * 21
+ip filter 1038 pass * 61.197.227.149 tcpflag=0x0002/0x0fff * 21
+ip filter 1039 pass * 61.197.227.150 tcpflag=0x0002/0x0fff * 21
+ip filter 1040 pass * 61.197.227.145 tcp,udp * 22,2299,www,https,7799
+ip filter 1041 pass * 61.197.227.147 tcp,udp * 22,smtp,pop3,imap2,https,100,8010,11024
+ip filter 1042 pass * 61.197.227.148 tcp,udp * 22,https
+ip filter 1043 pass-log * 61.197.227.149 tcp,udp * 22,smtp,domain,https,5222,5223,8008,ldap,625,kerberos,749,106,3659,5003,3283,5432,5900,5988,8080,www
+ip filter 1044 pass-log * 192.168.0.1 tcp,udp * 22,2299,www,https,7799
+ip filter 1045 pass-log * * tcp ftpdata *
+ip filter 1046 pass * * tcp * smtp,pop3
+ip filter 1047 pass * * tcp * ident
+ip filter 1060 pass-log * 192.168.0.150 tcp,udp * 22,smtp,domain,https,5222,5223,8008,ldap,625,kerberos,749,106,3659,5003,3283,5432,5900,5988,8080,www
+ip filter 2000 reject * *
+ip filter 3000 pass * *
+ip filter dynamic 100 * * ftp
+ip filter dynamic 101 * * www
+ip filter dynamic 102 * * domain
+ip filter dynamic 103 * * smtp
+ip filter dynamic 104 * * pop3
+ip filter dynamic 105 * * tcp
+ip filter dynamic 106 * * udp
+ip filter dynamic 107 * * telnet
+ip filter dynamic 108 * * filter 1046 in 1047
+ip filter dynamic 200 192.168.0.0/24 * telnet
+ip filter dynamic 201 * 61.197.227.145 www
+ip filter dynamic 202 * 61.197.227.146 www
+ip filter dynamic 203 * 61.197.227.147 www
+ip filter dynamic 204 * 61.197.227.148 www
+ip filter dynamic 205 * 61.197.227.149 www
+ip filter dynamic 206 * 61.197.227.150 www
+ip filter dynamic 207 * 61.197.227.148 ftp
+ip filter dynamic 208 * 61.197.227.149 ftp
+ip filter dynamic 209 * 61.197.227.150 ftp
+nat descriptor log on
+nat descriptor type 1 masquerade
+nat descriptor address outer 1 61.197.227.145
+nat descriptor address inner 1 61.197.227.145 192.168.0.1-192.168.0.254
+nat descriptor masquerade static 1 1 192.168.0.1 tcp 7799
+nat descriptor masquerade static 1 2 192.168.0.1 tcp 2299
+nat descriptor masquerade static 1 3 192.168.0.1 tcp 1723
+nat descriptor masquerade static 1 4 192.168.0.1 gre
+nat descriptor masquerade static 1 5 192.168.0.1 tcp www
+nat descriptor masquerade static 1 6 192.168.0.1 tcp 22
+nat descriptor type 2 masquerade
+nat descriptor address outer 2 61.197.227.149
+nat descriptor address inner 2 61.197.227.149 192.168.0.150
+nat descriptor masquerade static 2 1 192.168.0.150 tcp 7799
+nat descriptor masquerade static 2 2 192.168.0.150 tcp 5222
+nat descriptor masquerade static 2 3 192.168.0.150 udp 5222
+nat descriptor masquerade static 2 4 192.168.0.150 tcp 5223
+nat descriptor masquerade static 2 5 192.168.0.150 udp 5223
+nat descriptor masquerade static 2 6 192.168.0.150 tcp www
+nat descriptor masquerade static 2 7 192.168.0.150 tcp https
+nat descriptor masquerade static 2 8 192.168.0.150 tcp domain
+nat descriptor masquerade static 2 9 192.168.0.150 udp domain
+nat descriptor masquerade static 2 10 192.168.0.150 tcp 8443
+nat descriptor masquerade static 2 11 192.168.0.150 tcp 2299
+nat descriptor masquerade static 2 12 192.168.0.150 tcp 22
+nat descriptor masquerade static 2 13 192.168.0.150 tcp 5269
+nat descriptor masquerade static 2 14 192.168.0.150 udp 5269
+nat descriptor masquerade static 2 15 192.168.0.150 tcp 12000
+nat descriptor masquerade static 2 16 192.168.0.150 tcp smtp
+nat descriptor masquerade static 2 17 192.168.0.150 tcp 8008
+nat descriptor masquerade static 2 18 192.168.0.150 tcp ldap
+nat descriptor masquerade static 2 19 192.168.0.150 udp ldap
+nat descriptor masquerade static 2 20 192.168.0.150 tcp 625
+nat descriptor masquerade static 2 21 192.168.0.150 udp 625
+nat descriptor masquerade static 2 22 192.168.0.150 tcp kerberos
+nat descriptor masquerade static 2 23 192.168.0.150 udp kerberos
+nat descriptor masquerade static 2 24 192.168.0.150 tcp 749
+nat descriptor masquerade static 2 25 192.168.0.150 udp 749
+nat descriptor masquerade static 2 26 192.168.0.150 tcp 106
+nat descriptor masquerade static 2 27 192.168.0.150 udp 106
+nat descriptor masquerade static 2 28 192.168.0.150 tcp 3659
+nat descriptor masquerade static 2 29 192.168.0.150 udp 3659
+nat descriptor masquerade static 2 30 192.168.0.150 tcp 5003
+nat descriptor masquerade static 2 31 192.168.0.150 udp 5003
+nat descriptor masquerade static 2 32 192.168.0.150 tcp 3283
+nat descriptor masquerade static 2 33 192.168.0.150 udp 3283
+nat descriptor masquerade static 2 34 192.168.0.150 tcp 5432
+nat descriptor masquerade static 2 35 192.168.0.150 udp 5432
+nat descriptor masquerade static 2 36 192.168.0.150 tcp 5900
+nat descriptor masquerade static 2 37 192.168.0.150 udp 5900
+nat descriptor masquerade static 2 38 192.168.0.150 tcp 5988
+nat descriptor masquerade static 2 39 192.168.0.150 udp 5988
+nat descriptor masquerade static 2 40 192.168.0.150 tcp 8080
+nat descriptor masquerade static 2 41 192.168.0.150 udp 8080
+syslog notice on
+syslog debug off
+dns service recursive
+dns server 202.239.113.18
+dns domain saico.com
+dns private address spoof on
+httpd listen 7799
+httpd timeout 180
+httpd host any
+upnp use on
+http revision-up timeout 180
+mail-notify status use on
+mail-notify status server gaudi.saico.com
+mail-notify status from administrator@gaudi.saico.com
+mail-notify status to 1 sai.systems.messages@saico.com
+mail-notify status subject "SAI Router Report"
+mail-notify status timeout 60
+mail-notify status type all
+sshd service on
+sshd listen 2299
+sshd host key generate *
+sftpd host none

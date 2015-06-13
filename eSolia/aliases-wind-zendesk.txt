@@ -1,0 +1,394 @@
+#
+# Sample aliases file. Install in the location as specified by the
+# output from the command "postconf alias_maps". Typical path names
+# are /etc/aliases or /etc/mail/aliases.
+#
+#	>>>>>>>>>>      The program "newaliases" must be run after
+#	>> NOTE >>      this file is updated for any changes to
+#	>>>>>>>>>>      show through to Postfix.
+#
+
+# Person who should get root's mail. Don't receive mail as root!
+#root:		you
+
+# Basic system aliases -- these MUST be present
+MAILER-DAEMON:	postmaster
+postmaster:	root
+
+# General redirections for pseudo accounts
+bin:		root
+daemon:		root
+named:		root
+nobody:		root
+uucp:		root
+www:		root
+ftp-bugs:	root
+postfix:	root
+
+# Put your local aliases here.
+
+### BEGIN ESOLIA ALIASES
+# eSolia Alias Syntax - 
+# acme-support: support, support-acme@esolia.co.jp
+# acme-p1: support, :include:/opt/postfix/esolia-cellphonemail-01
+
+# After You Edit This File, run the following commands as root to enable:
+# postalias /etc/postfix/aliases
+# newaliases
+
+# SPECIAL ALIASES
+
+support: support@esolia.zendesk.com,ticket-collector
+notifications-support: support
+sfdc-case: support,:include:/opt/postfix/esolia-ticket-monitors-01
+ticket-monitors: :include:/opt/postfix/esolia-ticket-monitors-01
+ticket-collector: esolia@gmail.com,ticket.collector@esolia.co.jp
+protrac-reports: rick.cogley@esolia.co.jp,takumi.fukuoka@esolia.co.jp,miwako.takahashi@esolia.co.jp
+
+# TEST ALIASES
+
+7799-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc 7799-p1@esolia.net 7799-p1@esolia.zendesk.com [7799]",:include:/opt/postfix/esolia-cellphonemail-test
+7799-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc 7799-support@esolia.net 7799-support@esolia.zendesk.com [7799]"
+
+7799-test: rick.cogley@gmail.com,rick.cogley@me.com,nathan-work@jrx.me
+7799-testing: ticket-monitors
+testor: support@esolia.zendesk.com
+tsb:   "| /usr/bin/procmail -m /opt/postfix/procmail-tag.rc [TSB] track"
+
+# ZENDESK CC BLACKLIST
+# Add new support aliases here for reference, then update the blacklist in Zendesk.
+# support@esolia.net 7799-p1@esolia.net 7799-support@esolia.net aag-p1@esolia.net aag-support@esolia.net algn-p1@esolia.net algn-support@esolia.net ap-p1@esolia.net ap-support@esolia.net cjllc-p1@esolia.net cjllc-support@esolia.net cook-p1@esolia.net cook-support@esolia.net cp-p1@esolia.net cp-support@esolia.net crp-p1@esolia.net crp-support@esolia.net cv-p1@esolia.net cv-support@esolia.net fei-p1@esolia.net fei-support@esolia.net gar-p1@esolia.net gar-support@esolia.net jung-p1@esolia.net jung-support@esolia.net kyi-p1@esolia.net kyi-support@esolia.net lazard-p1@esolia.net lazard-support@esolia.net lfkk-p1@esolia.net lfkk-support@esolia.net ljam-p1@esolia.net ljam-support@esolia.net lmv-p1@esolia.net lmv-support@esolia.net lopo-p1@esolia.net lopo-support@esolia.net mbkp-p1@esolia.net mbkp-support@esolia.net mwv-p1@esolia.net mwv-support@esolia.net neca-p1@esolia.net neca-support@esolia.net psly-p1@esolia.net psly-support@esolia.net sac-p1@esolia.net sac-support@esolia.net wb-p1@esolia.net wb-support@esolia.net wbj-p1@esolia.net wbj-support@esolia.net
+
+# ESOLIA SUPPORT ALIASES (projects below)
+
+aag-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc aag-p1@esolia.net aag-p1@esolia.zendesk.com [AAG]",:include:/opt/postfix/esolia-cellphonemail-01
+aag-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc aag-support@esolia.net aag-support@esolia.zendesk.com [AAG]"
+aag-requester: ticket-collector
+
+algn-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc algn-p1@esolia.net algn-p1@esolia.zendesk.com [ALGN]",:include:/opt/postfix/esolia-cellphonemail-01
+algn-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc algn-support@esolia.net algn-support@esolia.zendesk.com [ALGN]"
+algn-requester: ticket-collector
+
+ap-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc ap-p1@esolia.net ap-p1@esolia.zendesk.com [AP]",:include:/opt/postfix/esolia-cellphonemail-01
+ap-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc ap-support@esolia.net ap-support@esolia.zendesk.com [AP]"
+ap-requester: ticket-collector
+
+asp-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc asp-p1@esolia.net asp-p1@esolia.zendesk.com [ASP]",:include:/opt/postfix/esolia-cellphonemail-01
+asp-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc asp-support@esolia.net asp-support@esolia.zendesk.com [ASP]"
+asp-requester: ticket-collector
+
+cjllc-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc cjllc-p1@esolia.net cjllc-p1@esolia.zendesk.com [CJLLC]",:include:/opt/postfix/esolia-cellphonemail-01
+cjllc-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc cjllc-support@esolia.net cjllc-support@esolia.zendesk.com [CJLLC]"
+cjllc-requester: ticket-collector
+
+cook-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc cook-p1@esolia.net cook-p1@esolia.zendesk.com [COOK]",:include:/opt/postfix/esolia-cellphonemail-01
+cook-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc cook-support@esolia.net cook-support@esolia.zendesk.com [COOK]",support-cook@esolia.co.jp
+cook-requester: ticket-collector
+
+crp-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc crp-p1@esolia.net crp-p1@esolia.zendesk.com [CRP]",:include:/opt/postfix/esolia-cellphonemail-01
+crp-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc crp-support@esolia.net crp-support@esolia.zendesk.com [CRP]"
+crp-requester: ticket-collector
+
+cv-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc cv-p1@esolia.net cv-p1@esolia.zendesk.com [CV]",:include:/opt/postfix/esolia-cellphonemail-01
+cv-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc cv-support@esolia.net cv-support@esolia.zendesk.com [CV]"
+cv-requester: ticket-collector
+
+dlap-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc dlap-p1@esolia.net dlap-p1@esolia.zendesk.com [DLAP]",:include:/opt/postfix/esolia-cellphonemail-01
+dlap-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc dlap-support@esolia.net dlap-support@esolia.zendesk.com [DLAP]"
+dlap-requester: ticket-collector
+
+fei-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc fei-p1@esolia.net fei-p1@esolia.zendesk.com [FEI]",:include:/opt/postfix/esolia-cellphonemail-01
+fei-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc fei-support@esolia.net fei-support@esolia.zendesk.com [FEI]",support-fei@esolia.co.jp
+fei-requester: ticket-collector
+
+gar-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc gar-p1@esolia.net gar-p1@esolia.zendesk.com [GAR]",:include:/opt/postfix/esolia-cellphonemail-01
+gar-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc gar-support@esolia.net gar-support@esolia.zendesk.com [GAR]"
+gar-requester: ticket-collector
+
+jung-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc jung-p1@esolia.net jung-p1@esolia.zendesk.com [JUNG]",:include:/opt/postfix/esolia-cellphonemail-01
+jung-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc jung-support@esolia.net jung-support@esolia.zendesk.com [JUNG]"
+jung-requester: ticket-collector
+
+kyi-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc kyi-p1@esolia.net kyi-p1@esolia.zendesk.com [KYI]",:include:/opt/postfix/esolia-cellphonemail-01
+kyi-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc kyi-support@esolia.net kyi-support@esolia.zendesk.com [KYI]"
+kyi-requester: ticket-collector
+
+lfkk-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc lfkk-p1@esolia.net lfkk-p1@esolia.zendesk.com [LFKK]",:include:/opt/postfix/esolia-cellphonemail-01
+lfkk-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc lfkk-support@esolia.net lfkk-support@esolia.zendesk.com [LFKK]"
+lfkk-requester: ticket-collector
+
+ljam-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc ljam-p1@esolia.net ljam-p1@esolia.zendesk.com [LJAM]",:include:/opt/postfix/esolia-cellphonemail-01
+ljam-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc ljam-support@esolia.net ljam-support@esolia.zendesk.com [LJAM]"
+ljam-requester: ticket-collector
+lazard-requester: ticket-collector
+
+lmv-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc lmv-p1@esolia.net lmv-p1@esolia.zendesk.com [LMV]",:include:/opt/postfix/esolia-cellphonemail-01
+lmv-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc lmv-support@esolia.net lmv-support@esolia.zendesk.com [LMV]"
+lmv-requester: ticket-collector
+
+lopo-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc lopo-p1@esolia.net lopo-p1@esolia.zendesk.com [LOPO]",:include:/opt/postfix/esolia-cellphonemail-01
+lopo-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc lopo-support@esolia.net lopo-support@esolia.zendesk.com [LOPO]"
+lopo-requester: ticket-collector
+
+mbkp-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc mbkp-p1@esolia.net mbkp-p1@esolia.zendesk.com [MBKP]",:include:/opt/postfix/esolia-cellphonemail-01
+mbkp-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc mbkp-support@esolia.net mbkp-support@esolia.zendesk.com [MBKP]"
+mbkp-requester: ticket-collector
+
+mwv-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc mwv-p1@esolia.net mwv-p1@esolia.zendesk.com [MWV]",:include:/opt/postfix/esolia-cellphonemail-01
+mwv-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc mwv-support@esolia.net mwv-support@esolia.zendesk.com [MWV]"
+mwv-requester: ticket-collector
+
+neca-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc neca-p1@esolia.net neca-p1@esolia.zendesk.com [NECA]",:include:/opt/postfix/esolia-cellphonemail-01
+neca-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc neca-support@esolia.net neca-support@esolia.zendesk.com [NECA]"
+neca-requester: ticket-collector
+
+psly-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc psly-p1@esolia.net psly-p1@esolia.zendesk.com [PSLY]",:include:/opt/postfix/esolia-cellphonemail-01
+psly-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc psly-support@esolia.net psly-support@esolia.zendesk.com [PSLY]"
+psly-requester: ticket-collector
+
+sac-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc sac-p1@esolia.net sac-p1@esolia.zendesk.com [SAC]",:include:/opt/postfix/esolia-cellphonemail-01
+sac-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc sac-support@esolia.net sac-support@esolia.zendesk.com [SAC]"
+sac-requester: ticket-collector
+
+tm-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc tm-p1@esolia.net tm-p1@esolia.zendesk.com [TM]",:include:/opt/postfix/esolia-cellphonemail-01
+tm-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc tm-support@esolia.net tm-support@esolia.zendesk.com [TM]"
+tm-requester: ticket-collector
+
+wb-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc wb-p1@esolia.net wb-p1@esolia.zendesk.com [WB]",:include:/opt/postfix/esolia-cellphonemail-01
+wb-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc wb-support@esolia.net wb-support@esolia.zendesk.com [WB]"
+wb-requester: ticket-collector
+
+wbj-p1: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc wbj-p1@esolia.net wbj-p1@esolia.zendesk.com [WBJ]",:include:/opt/postfix/esolia-cellphonemail-01
+wbj-support: "| /usr/bin/procmail -m /opt/postfix/procmail-zendesk-subject-tag-and-headers.rc wbj-support@esolia.net wbj-support@esolia.zendesk.com [WBJ]"
+wbj-requester: ticket-collector
+
+# ESOLIA PROJECT ALIASES
+
+cook-p-cjucinitial: rick.cogley@esolia.co.jp,Ted.Hickman@CookGroup.com,kogose@cook-japan.com,takumi.fukuoka@esolia.co.jp,ena.ishikawa@esolia.co.jp,hideaki.horiuchi@esolia.co.jp
+
+### END ESOLIA ALIASES
+
+### DO NOT MANUALLY EDIT THIS SECTION ###
+# This section is automatically generated
+
+
+esolia-wiki:	, teamsserver@localhost, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, rick.cogley@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, takumi.fukuoka@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+ljam-wiki:	, teamsserver@localhost, rick.cogley@esolia.co.jp, takumi.fukuoka@esolia.co.jp, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+sac-wiki:	, teamsserver@localhost, rick.cogley@esolia.co.jp, takumi.fukuoka@esolia.co.jp, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+esoliateamitms-wiki:	, teamsserver@localhost, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, rick.cogley@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, takumi.fukuoka@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+esoliaadmin-wiki:	, teamsserver@localhost, miwako.takahashi@esolia.co.jp, rick.cogley@esolia.co.jp, takumi.fukuoka@esolia.co.jp
+esoliaconsulting-wiki:	, teamsserver@localhost, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, rick.cogley@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, takumi.fukuoka@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+cj-wiki:	, teamsserver@localhost, rick.cogley@esolia.co.jp, takumi.fukuoka@esolia.co.jp, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+fei-wiki:	, teamsserver@localhost, rick.cogley@esolia.co.jp, takumi.fukuoka@esolia.co.jp, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+esoliasales-wiki:	, teamsserver@localhost, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, rick.cogley@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, takumi.fukuoka@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+esoliasandbox-wiki:	, teamsserver@localhost, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, rick.cogley@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, takumi.fukuoka@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+wbj-wiki:	, teamsserver@localhost, rick.cogley@esolia.co.jp, takumi.fukuoka@esolia.co.jp, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+lmv-wiki:	, teamsserver@localhost, rick.cogley@esolia.co.jp, takumi.fukuoka@esolia.co.jp, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+cook-wiki:	, teamsserver@localhost, rick.cogley@esolia.co.jp, takumi.fukuoka@esolia.co.jp, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+lfkk-wiki:	, teamsserver@localhost, rick.cogley@esolia.co.jp, takumi.fukuoka@esolia.co.jp, ena.ishikawa@esolia.co.jp, Yorihisa.Nakada@eSolia.co.jp, miwako.takahashi@esolia.co.jp, toshio.naito@esolia.co.jp, yasuyoshi.akiyama@esolia.co.jp, hideaki.horiuchi@esolia.co.jp
+
+### END AUTO ADDITIONS ###
+
+# Well-known aliases
+manager:	root
+dumper:		root
+operator:	root
+abuse:		postmaster
+
+# trap decode to catch security attacks
+decode:		root
+
+# ALIASES(5)                                                          ALIASES(5)
+# 
+# NAME
+#        aliases - Postfix local alias database format
+# 
+# SYNOPSIS
+#        newaliases
+# 
+# DESCRIPTION
+#        The  aliases(5)  table provides a system-wide mechanism to
+#        redirect mail for local recipients. The  redirections  are
+#        processed by the Postfix local(8) delivery agent.
+# 
+#        Normally, the aliases(5) table is specified as a text file
+#        that serves as input  to  the  postalias(1)  command.  The
+#        result,  an  indexed file in dbm or db format, is used for
+#        fast lookup  by  the  mail  system.  Execute  the  command
+#        newaliases  in  order  to  rebuild  the indexed file after
+#        changing the Postfix alias database.
+# 
+#        The input and output file formats are expected to be  com-
+#        patible  with  Sendmail  version 8, and are expected to be
+#        suitable for the use as NIS maps.
+# 
+#        Users can control delivery of their own mail by setting up
+#        .forward files in their home directory.  Lines in per-user
+#        .forward files have the same syntax as the right-hand side
+#        of aliases(5) entries.
+# 
+#        The format of the alias database input file is as follows:
+# 
+#        o      An alias definition has the form
+# 
+#                    name: value1, value2, ...
+# 
+#        o      Empty lines and whitespace-only lines are  ignored,
+#               as  are  lines whose first non-whitespace character
+#               is a `#'.
+# 
+#        o      A logical line starts with non-whitespace  text.  A
+#               line  that starts with whitespace continues a logi-
+#               cal line.
+# 
+#        The name is a local address (no domain part).  Use  double
+#        quotes  when the name contains any special characters such
+#        as whitespace, `#', `:', or `@'. The  name  is  folded  to
+#        lowercase, in order to make database lookups case insensi-
+#        tive.
+# 
+#        In addition, when an alias exists for owner-name, delivery
+#        diagnostics  are  directed  to that address, instead of to
+#        the originator of the message.  This is typically used  to
+#        direct  delivery  errors  to  the  maintainer of a mailing
+#        list, who is in a better position  to  deal  with  mailing
+#        list delivery problems than the originator of the undeliv-
+#        ered mail.
+# 
+#        The value contains one or more of the following:
+# 
+#        address
+#               Mail is forwarded to address, which  is  compatible
+#               with the RFC 822 standard.
+# 
+#        /file/name
+#               Mail  is  appended  to /file/name. See local(8) for
+#               details of delivery to file.  Delivery is not  lim-
+#               ited  to regular files.  For example, to dispose of
+#               unwanted mail, deflect it to /dev/null.
+# 
+#        |command
+#               Mail is piped into command. Commands  that  contain
+#               special  characters,  such as whitespace, should be
+#               enclosed between double quotes.  See  local(8)  for
+#               details of delivery to command.
+# 
+#               When the command fails, a limited amount of command
+#               output is mailed back  to  the  sender.   The  file
+#               /usr/include/sysexits.h  defines  the expected exit
+#               status codes. For example, use "|exit 67" to  simu-
+#               late  a  "user  unknown"  error,  and  "|exit 0" to
+#               implement an expensive black hole.
+# 
+#        :include:/file/name
+#               Mail is sent to  the  destinations  listed  in  the
+#               named file.  Lines in :include: files have the same
+#               syntax as the right-hand side of alias entries.
+# 
+#               A  destination  can  be  any  destination  that  is
+#               described in this manual page. However, delivery to
+#               "|command" and /file/name is disallowed by default.
+#               To  enable,  edit  the  allow_mail_to_commands  and
+#               allow_mail_to_files configuration parameters.
+# 
+# ADDRESS EXTENSION
+#        When alias database search fails, and the recipient local-
+#        part  contains  the  optional  recipient  delimiter (e.g.,
+#        user+foo), the  search  is  repeated  for  the  unextended
+#        address (e.g., user).
+# 
+#        The   propagate_unmatched_extensions   parameter  controls
+#        whether an unmatched address extension  (+foo)  is  propa-
+#        gated to the result of table lookup.
+# 
+# CASE FOLDING
+#        The local(8) delivery agent always folds the search string
+#        to lowercase before database lookup.
+# 
+# SECURITY
+#        The local(8) delivery agent disallows  regular  expression
+#        substitution  of $1 etc. in alias_maps, because that would
+#        open a security hole.
+# 
+#        The local(8) delivery agent will silently ignore  requests
+#        to  use  the proxymap(8) server within alias_maps. Instead
+#        it will open the table directly.  Before  Postfix  version
+#        2.2,  the  local(8)  delivery  agent will terminate with a
+#        fatal error.
+# 
+# CONFIGURATION PARAMETERS
+#        The following main.cf parameters are especially  relevant.
+#        The  text  below  provides  only  a parameter summary. See
+#        postconf(5) for more details including examples.
+# 
+#        alias_database
+#               List of alias databases that  are  updated  by  the
+#               newaliases(1) command.
+# 
+#        alias_maps
+#               List  of  alias  databases  queried by the local(8)
+#               delivery agent.
+# 
+#        allow_mail_to_commands
+#               Restrict the usage of  mail  delivery  to  external
+#               command.
+# 
+#        allow_mail_to_files
+#               Restrict  the  usage  of  mail delivery to external
+#               file.
+# 
+#        expand_owner_alias
+#               When delivering to an alias that has an owner- com-
+#               panion  alias,  set  the envelope sender address to
+#               the right-hand side of  the  owner  alias,  instead
+#               using of the left-hand side address.
+# 
+#        propagate_unmatched_extensions
+#               A  list  of  address rewriting or forwarding mecha-
+#               nisms that propagate an address extension from  the
+#               original  address  to  the  result. Specify zero or
+#               more  of  canonical,   virtual,   alias,   forward,
+#               include, or generic.
+# 
+#        owner_request_special
+#               Give  special treatment to owner-listname and list-
+#               name-request addresses.
+# 
+#        recipient_delimiter
+#               Delimiter that separates  recipients  from  address
+#               extensions.
+# 
+#        Available in Postfix version 2.3 and later:
+# 
+#        frozen_delivered_to
+#               Update  the local(8) delivery agent's Delivered-To:
+#               address (see prepend_delivered_header)  only  once,
+#               at  the  start  of  a  delivery;  do not update the
+#               Delivered-To: address while  expanding  aliases  or
+#               .forward files.
+# 
+# STANDARDS
+#        RFC 822 (ARPA Internet Text Messages)
+# 
+# SEE ALSO
+#        local(8), local delivery agent
+#        newaliases(1), create/update alias database
+#        postalias(1), create/update alias database
+#        postconf(5), configuration parameters
+# 
+# README FILES
+#        Use  "postconf  readme_directory" or "postconf html_direc-
+#        tory" to locate this information.
+#        DATABASE_README, Postfix lookup table overview
+# 
+# LICENSE
+#        The Secure Mailer license must be  distributed  with  this
+#        software.
+# 
+# AUTHOR(S)
+#        Wietse Venema
+#        IBM T.J. Watson Research
+#        P.O. Box 704
+#        Yorktown Heights, NY 10598, USA
+# 
+#                                                                     ALIASES(5)

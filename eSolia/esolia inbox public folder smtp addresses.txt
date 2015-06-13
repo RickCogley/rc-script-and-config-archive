@@ -1,0 +1,22 @@
+inboxa&g@esolia.co.jp, inboxaligntech@esolia.co.jp, inboxamorepacific@esolia.co.jp, inboxasprey@esolia.co.jp, inboxcarlyle@esolia.co.jp, inboxcook@esolia.co.jp, inboxcresentpartners@esolia.co.jp, inboxdla@esolia.co.jp, inboxfei@esolia.co.jp, inboxgarrard@esolia.co.jp, inboxkyinvestmentasia@esolia.co.jp, inboxlazardfrere@esolia.co.jp, inboxlazardjapanassetmanagement@esolia.co.jp, inboxlemaitre@esolia.co.jp, inboxlouispoulsen@esolia.co.jp, inboxmbkpartners@esolia.co.jp, inboxmeadwestvaco@esolia.co.jp, inboxneca@esolia.co.jp, inboxsartorius@esolia.co.jp, inboxsullivanandcromwell@esolia.co.jp, inboxtellermate@esolia.co.jp, inboxwilliamblair@esolia.co.jp 
+
+Failures
+
+inboxasprey@esolia.co.jp
+inboxcook@esolia.co.jp
+inboxgarrard@esolia.co.jp
+inboxlouispoulsen@esolia.co.jp
+inboxneca@esolia.co.jp
+inboxsartorius@esolia.co.jp
+
+!eSoliaTechGroup@esolia.co.jp
+
+techgroup: rick.cogley@esolia.co.jp,takumi.fukuoka@esolia.co.jp,hideaki.horiuchi@esolia.co.jp,yorihisa.nakada@esolia.co.jp,yasuyoshi.akiyama@esolia.co.jp,toshio.naito@esolia.co.jp,miwako.takahashi@esolia.co.jp
+
+>member: CN=Toshio Naito,OU=Users & Groups,OU=eSolia,DC=esolia,DC=local
+>member: CN=Yasuyoshi Akiyama,OU=Users & Groups,OU=eSolia,DC=esolia,DC=local
+>member: CN=Yorihisa Nakada,OU=Users & Groups,OU=eSolia,DC=esolia,DC=local
+>member: CN=Hideaki Horiuchi,OU=Users & Groups,OU=eSolia,DC=esolia,DC=local
+>member: CN=Rick Cogley,OU=Users & Groups,OU=eSolia,DC=esolia,DC=local
+>member: CN=Miwako Takahashi,OU=Users & Groups,OU=eSolia,DC=esolia,DC=local
+>member: CN=Takumi Fukuoka,OU=Users & Groups,OU=eSolia,DC=esolia,DC=local

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>protocols</key>
+	<array>
+		<string>help</string>
+		<string>file</string>
+	</array>
+	<key>styles</key>
+	<array>
+		<string>text-align</string>
+		<string>text-decoration</string>
+		<string>font-weight</string>
+		<string>font-style</string>
+	</array>
+	<key>tags</key>
+	<dict>
+		<key>_all_</key>
+		<array>
+			<string>style</string>
+		</array>
+		<key>embed</key>
+		<array>
+			<string>type</string>
+			<string>wmode</string>
+			<string>width</string>
+			<string>height</string>
+			<string>src</string>
+                        <string>type</string>
+                        <string>allowfullscreen</string>
+                        <string>menu</string>
+                        <string>flashvars</string>
+                        <string>file</string>
+                        <string>image</string>
+                        <string>location</string>
+                        <string>logo</string>
+                        <string>searchlink</string>
+                        <string>autostart</string>
+                        <string>volume</string>
+                        <string>overstretch</string>
+                        <string>frontcolor</string>
+                        <string>backcolor</string>
+                        <string>lightcolor</string>
+                        <string>screencolor</string>
+                        <string>viewkey</string>
+                        <string>linkfromdisplay</string>
+                        <string>recommendations</string>
+		</array>
+		<key>object</key>
+		<array>
+			<string>classid</string>
+			<string>width</string>
+			<string>height</string>
+			<string>codebase</string>
+		</array>
+		<key>param</key>
+		<array>
+			<string>name</string>
+			<string>value</string>
+		</array>
+	</dict>
+</dict>
+</plist>

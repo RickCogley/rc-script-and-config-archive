@@ -1,0 +1,16 @@
+Remote Login (TELNET,RSH,RLOGIN)#23,514,513#deny#@
+Internet File Sharing (FTP)#20-21#deny#@
+Remote Apple Events#3031#deny#@
+Remote Desktop and Management#3283#deny#@
+VPN (L2TP)#500,1701,1723,4500,10000#deny#@
+*All other services##allow#@
+iTunes Music Sharing#3689#allow#@
+iChat (bonjour, AV, ScreenSharing)#5060,5297,16384-16403#allow#@
+Apple File Sharing (AFP)#548#allow#@
+Remote Login (SSH)#22#allow#@
+Web Server (HTTP)#80#allow#@
+Screen Sharing#5900#allow#@
+Printer Sharing#515,631#allow#@
+System internal services (UDP)#53,67,68,123,5353#allow#@
+Windows Sharing (SMB)#139,445#allow#@
+iPhoto Sharing#8770#allow#@

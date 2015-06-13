@@ -1,0 +1,816 @@
+# --
+# Kernel/Config.pm - Config file for OTRS kernel
+# Copyright (C) 2001-2005 Martin Edenhofer <martin+code@otrs.org>
+# --
+# $Id: Config.pm.dist,v 1.15 2005/02/15 12:09:19 martin Exp $
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (GPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/gpl.txt.
+# --
+#  Note:
+#
+#  -->> OTRS does have a lot of config settings. For more settings
+#       (Notifications, Ticket::ViewAccelerator, Ticket::NumberGenerator,
+#       LDAP, PostMaster, Session, Preferences, ...) see
+#       Kernel/Config/Defaults.pm and copy your wanted lines into "this"
+#       config file. This file will not be changed on update!
+#
+# --
+package Kernel::Config;
+# --
+sub Load {
+    my $Self = shift;
+    # ---------------------------------------------------- #
+    # ---------------------------------------------------- #
+    #                                                      #
+    #         Start of your own config options!!!          #
+    #                                                      #
+    # ---------------------------------------------------- #
+    # ---------------------------------------------------- #
+
+    # ---------------------------------------------------- #
+    # system data                                          #
+    # ---------------------------------------------------- #
+    # SecureMode
+    # (Enable this so you can't use the installer.pl)
+    $Self->{'SecureMode'} = 1;
+    # SystemID
+    # (The identify of the system. Each ticket number and
+    # each http session id starts with this number)
+    $Self->{'SystemID'} = 10;
+    # FQDN
+    # (Full qualified domain name of your system.)
+    $Self->{'FQDN'} = 'www.esolia.net/otrs';
+    # AdminEmail
+    # (Email of the system admin.)
+    $Self->{'AdminEmail'} = 'rick.cogley@esolia.co.jp';
+    # Organization
+    # (If this is anything other than '', then the email will have an
+    # Organization X-Header)
+    $Self->{'Organization'} = 'eSolia Inc.';
+
+    # ---------------------------------------------------- #
+    # database settings                                    #
+    # ---------------------------------------------------- #
+    # DatabaseHost
+    # (The database host.)
+    $Self->{DatabaseHost} = 'localhost';
+    # Database
+    # (The database name.)
+    $Self->{Database} = 'otrs01';
+    # DatabaseUser
+    # (The database user.)
+    $Self->{DatabaseUser} = 'otrs';
+    # DatabasePw
+    # (The password of database user. You also can use bin/CryptPassword.pl
+    # for crypted passwords.)
+    $Self->{DatabasePw} = 'otrs2005!';
+    # DatabaseDSN
+    # (The database DSN for MySQL ==> more: "man DBD::mysql")
+    $Self->{DatabaseDSN} = "DBI:mysql:database=$Self->{Database};host=$Self->{DatabaseHost};";
+
+    # (The database DSN for PostgrSQL ==> more: "man DBD::Pg")
+    # if you want to use a local socket connection
+#    $Self->{DatabaseDSN} = "DBI:Pg:dbname=$Self->{Database};";
+    # if you want to use a tcpip connection
+#    $Self->{DatabaseDSN} = "DBI:Pg:dbname=$Self->{Database};host=$Self->{DatabaseHost};";
+
+    # ---------------------------------------------------- #
+    # fs root directory
+    # ---------------------------------------------------- #
+    $Self->{Home} = '/opt/otrs';
+
+    # --------------------------------------------------- #
+    # Ticket
+    # --------------------------------------------------- #
+    # Ticket::Hook
+    # (To set the Ticket identifier. Some people want to
+    # set this to e. g. 'Call#', 'MyTicket#' or 'Ticket#'.)
+    $Self->{'Ticket::Hook'} = 'Ticket#';
+
+    # TicketHookDivider
+    # (the divider between TicketHook# and number)
+#    $Self->{'Ticket::HookDivider'} = ': ';
+    $Self->{'Ticket::HookDivider'} = '';
+
+    # **************************************************** #
+    # insert your own config settings "here"               #
+    # config settings taken from Kernel/Config/Defaults.pm #
+    # **************************************************** #
+    # $Self->{SessionUseCookie} = 0;
+    # $Self->{CheckMXRecord} = 1;
+
+    # **************************************************** #
+
+############### INSTALLER INSERTED ############################
+
+    # ---------------------------------------------------- #
+    # data inserted by installer                           #
+    # ---------------------------------------------------- #
+    # $DIBI$
+    $Self->{Ticket::NumberGenerator} = 'Kernel::System::Ticket::Number::DateChecksum';
+    $Self->{Ticket::Hook} = 'Ticket#';
+    $Self->{SystemID} = 10;
+    $Self->{SecureMode} = 1;
+    $Self->{Organization} = 'eSolia Inc.';
+    $Self->{LogModule::LogFile} = '/opt/otrs/var/log/otrs.log';
+    $Self->{LogModule} = 'Kernel::System::Log::SysLog';
+    $Self->{FQDN} = 'http://www.esolia.net/otrs';
+    $Self->{DefaultLanguage} = 'en';
+    $Self->{DefaultCharset} = 'utf-8';
+    $Self->{AdminEmail} = 'rick.cogley@esolia.co.jp';
+
+
+########### Other Settings from Kernel/Config/Defaults.pm  ############
+
+##########----- Default values for GUIs 
+
+# Languages used
+# (short name = long name and file)
+$Self->{DefaultUsedLanguages} = {
+            en => 'English',
+            de => 'Deutsch',
+            jp => 'jp',
+};
+
+    # ShowAlwaysLongTime
+    # (show always time in long /days hours minutes/ or short
+    # /days hours/ format)
+    $Self->{ShowAlwaysLongTime} = 0;
+
+    # AttachmentDownloadType
+    # (if the tickets attachments will be opened in browser or just to
+    # force the download) [attachment|inline]
+    $Self->{'AttachmentDownloadType'} = 'inline';
+#    $Self->{'AttachmentDownloadType'} = 'attachment';
+
+##########----- Log Module (log backend module)
+
+    $Self->{'LogModule'} = 'Kernel::System::Log::SysLog';
+#    $Self->{'LogModule'} = 'Kernel::System::Log::File';
+
+    # param for LogModule Kernel::System::Log::SysLog
+#    $Self->{'LogModule::SysLog::Facility'} = 'user';
+
+    # param for LogModule Kernel::System::Log::SysLog
+    # (if syslog can't work with utf-8, force the log
+    # charset with this option, on other chars will be
+    # replaces with ?)
+    $Self->{'LogModule::SysLog::Charset'} = 'iso-8859-15';
+#    $Self->{'LogModule::SysLog::Charset'} = 'utf-8';
+
+    # param for LogModule Kernel::System::Log::File (required!)
+    $Self->{'LogModule::LogFile'} = '/opt/otrs/var/log/otrs.log';
+
+    # param if the date (yyyy-mm) should be added as suffix to
+    # logfile [0|1]
+#    $Self->{'LogModule::LogFile::Date'} = 0;
+
+    # system log cache size for admin system log (default 4k)
+    # Note: use bin/CleanUp.pl before you change this
+#    $Self->{'LogSystemCacheSize'} = 4*1024;
+
+
+##########----- SendmailModule
+
+# SendmailBcc
+# (Send all outgoing email via bcc to...
+# Warning: use it only for external archive funktions)
+$Self->{'SendmailBcc'} = '';
+
+##########----- Notification Settings
+
+    # agent interface notification module to check the used charset
+    $Self->{'Frontend::NotifyModule'}->{'1-CharsetCheck'} = {
+        Module => 'Kernel::Output::HTML::NotificationCharsetCheck',
+    };
+    # agent interface notification module to check the admin user id
+    # (don't work with user id 1 notification)
+    $Self->{'Frontend::NotifyModule'}->{'2-UID-Check'} = {
+        Module => 'Kernel::Output::HTML::NotificationUIDCheck',
+    };
+    # show online agents
+    $Self->{'Frontend::NotifyModule'}->{'3-ShowAgentOnline'} = {
+        Module => 'Kernel::Output::HTML::NotificationAgentOnline',
+    };
+    # show online customers
+    $Self->{'Frontend::NotifyModule'}->{'4-ShowCustomerOnline'} = {
+        Module => 'Kernel::Output::HTML::NotificationCustomerOnline',
+    };
+
+##########----- Frontend::Output::PostFilter
+    # --------------------------------------------------- #
+    # Frontend::Output::PostFilter
+    # (a output filter for application html output, e. g. to filter
+    # java script, java applets, ...)
+#    $Self->{'Frontend::Output::PostFilter'}->{'ActiveElementFilter'} = {
+#        Module => 'Kernel::Output::HTML::OutputFilterActiveElement',
+#        Debug => 0,
+#    };
+
+##########----- Session
+
+    # SessionCheckRemoteIP
+    # (If the application is used via a proxy-farm then the
+    # remote ip address is mostly different. In this case,
+    # turn of the CheckRemoteID. ) [1|0]
+    $Self->{SessionCheckRemoteIP} = 0;
+
+    # SessionDeleteIfNotRemoteID
+    # (Delete session if the session id is used with an
+    # invalied remote IP?) [0|1]
+    $Self->{SessionDeleteIfNotRemoteID} = 0;
+
+    # SessionMaxTime
+    # (Max valid time of one session id in second (8h = 28800).)
+    $Self->{SessionMaxTime} = 12*60*60;
+
+    # SessionMaxIdleTime
+    # (After this time (in seconds) without new http request, then
+    # the user get logged off)
+    $Self->{SessionMaxIdleTime} = 6*60*60;
+
+
+##########----- Time
+
+# TimeZone
+# (set the system time zone, default is local time)
+$Self->{'TimeZone'} = +13;
+
+    # TimeWorkingHours
+    # (counted hours for working time used)
+    $Self->{'TimeWorkingHours'} = {
+        Mon => [ 9,10,11,12,13,14,15,16,17,18 ],
+        Tue => [ 9,10,11,12,13,14,15,16,17,18 ],
+        Wed => [ 9,10,11,12,13,14,15,16,17,18 ],
+        Thu => [ 9,10,11,12,13,14,15,16,17,18 ],
+        Fri => [ 9,10,11,12,13,14,15,16,17,18 ],
+        Sat => [  ],
+        Sun => [  ],
+    };
+
+    # TimeVacationDays
+    # adde new days with:
+    # "$Self->{TimeVacationDays}->{10}->{27} = 'Some Info';"
+
+    $Self->{'TimeVacationDays'} = {
+        1 => {
+            01 => 'New Year\'s Day!',
+        },
+        5 => {
+            01 => 'May Day',
+        },
+        7 => {
+            07 => 'eSolia Foundation - 1999',
+        },
+        12 => {
+            24 => 'Christmas Eve',
+            25 => 'Christmas Day',
+            31 => 'New Year\'s Day!',
+        },
+    };
+
+    # TimeVacationDaysOneTime
+    # adde new own days with:
+    # "$Self->{'TimeVacationDaysOneTime'}->{1977}-{10}->{27} = 'Some Info';"
+
+    $Self->{'TimeVacationDaysOneTime'} = {
+#        2004 => {
+#          6 => {
+#              07 => 'Some Day',
+#          },
+#          12 => {
+#              24 => 'Some A Day',
+#              31 => 'Some B Day',
+#          },
+#        },
+#        2005 => {
+#          1 => {
+#              11 => 'Some Day',
+#          },
+#        },
+    };
+
+
+##########----- Web Settings 
+
+    # WebMaxFileUpload
+    # (Max size for browser file uploads - default 5 MB)
+    $Self->{WebMaxFileUpload} = 1024 * 1024 * 30;
+
+    # WebUploadCacheModule
+    # (select you WebUploadCacheModule module, default DB [DB|FS])
+    $Self->{WebUploadCacheModule} = 'Kernel::System::Web::UploadCache::DB';
+#    $Self->{WebUploadCacheModule} = 'Kernel::System::Web::UploadCache::FS';
+
+    # CGILogPrefix
+    $Self->{CGILogPrefix} = 'OTRS-CGI';
+
+##########----- Agent Web Interface 
+
+    # LostPassword
+    # (use lost password feature)
+    $Self->{LostPassword} = 1;
+
+    # ShowMotd
+    # (show message of the day in login screen)
+    $Self->{ShowMotd} = 1;
+
+##########----- MIME-Viewer for online to html converter
+
+    # (e. g. xlhtml (xls2html), http://chicago.sourceforge.net/xlhtml/)
+#    $Self->{'MIME-Viewer'}->{'application/excel'} = 'xlhtml';
+    # MIME-Viewer for online to html converter
+    # (e. g. wv (word2html), http://wvware.sourceforge.net/)
+#    $Self->{'MIME-Viewer'}->{'application/msword'} = 'wvWare';
+    # (e. g. pdftohtml (pdf2html), http://pdftohtml.sourceforge.net/)
+#    $Self->{'MIME-Viewer'}->{'application/pdf'} = 'pdftohtml -stdout -i';
+    # (e. g. xml2html (xml2html))
+#    $Self->{'MIME-Viewer'}->{'text/xml'} = $Self->{Home}.'/scripts/tools/xml2html.pl';
+
+##########----- Spell Checker
+
+    # (If ispell or aspell is available, then we will provide a spelling
+    # checker.)
+#    $Self->{SpellChecker} = '';
+    $Self->{SpellChecker} = '/usr/bin/ispell';
+    $Self->{SpellCheckerDictDefault} = 'english';
+
+    # SpellCheckerIgnore
+    # (A list of ignored words.)
+    $Self->{SpellCheckerIgnore} = ['www', 'webmail', 'https', 'http', 'html', 'rfc'];
+
+##########----- Directories
+
+    # root directory
+    $Self->{'Home'} = '/opt/otrs';
+    # tmp dir
+    $Self->{'TempDir'} = '<OTRS_CONFIG_Home>/var/tmp';
+    # html template dir
+    $Self->{'TemplateDir'} = '<OTRS_CONFIG_Home>/Kernel/Output';
+
+##########----- System permissions
+    
+    $Self->{'System::Permission'} = ['ro', 'rw'];
+    $Self->{'System::Customer::Permission'} = ['ro', 'rw'];
+
+    # --------------------------------------------------- #
+    #                                                     #
+    #             Start of config options!!!              #
+    #                 Preferences stuff                   #
+    #                                                     #
+    # --------------------------------------------------- #
+
+##########----- Preferences
+
+
+    $Self->{PreferencesGroups}->{SpellDict} = {
+        Module => 'Kernel::Output::HTML::PreferencesGeneric',
+        Colum => 'Other Options',
+        Label => 'Spelling Dictionary',
+        Desc => 'Select your default spelling dictionary.',
+        Data => {
+            # installed dict catalog (check your insalled catalogues, e. g. deutsch -=> german!)
+            # dict => frontend (ispell)
+            'english' => 'English',
+            'deutsch' => 'Deutsch',
+            # dict => frontend (aspell)
+#            'english' => 'English',
+#            'german' => 'Deutsch',
+        },
+        PrefKey => 'UserSpellDict',
+        Prio => 5000,
+        Activ => 1,
+    };
+
+##########----- Notifications
+
+    # --
+    # notification sender
+    # --
+    $Self->{NotificationSenderName} = 'eSolia OTRS Notification Master';
+    $Self->{NotificationSenderEmail} = 'otrs@<OTRS_CONFIG_FQDN>';
+
+    # --
+    # notification email for new password
+    # --
+    $Self->{NotificationSubjectLostPassword} = 'New eSolia OTRS Password!';
+    $Self->{NotificationBodyLostPassword} = "
+Hello <OTRS_USERFIRSTNAME>,
+
+This message serves as notification that you, or someone impersonating you has 
+requested to change your OTRS password. The new password is: 
+
+<OTRS_NEWPW>
+
+You can access the eSolia OTRS system at: 
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl
+
+Thank you for using the system.
+
+Sincerely,
+Your OTRS Notification Master
+";
+
+##########----- Customer Panel config and notifications
+
+    # SessionName
+    # (Name of the session key. E. g. Session, SessionID, OTRS)
+    $Self->{CustomerPanelSessionName} = 'CSID';
+
+    # CustomerPanelUserID
+    # (The customer panel db-uid.) [default: 1]
+    $Self->{CustomerPanelUserID} = 1;
+
+    # CustomerGroupSupport (0 = compat. to OTRS 1.1 or lower)
+    # (if this is 1, the you need to set the group <-> customer user
+    # relations! http://host/otrs/index.pl?Action=AdminCustomerUserGroup
+    # otherway, each user is ro/rw in each group!)
+    
+    $Self->{CustomerGroupSupport} = 1;
+
+    # CustomerGroupAlwaysGroups
+    # (if CustomerGroupSupport is true and you don't want to manage
+    # each customer user for this groups, then put the groups
+    # for all customer user in there)
+    $Self->{CustomerGroupAlwaysGroups} = ['users', 'info'];
+
+    # show online agents
+    $Self->{'CustomerFrontend::NotifyModule'}->{'1-ShowAgentOnline'} = {
+        Module => 'Kernel::Output::HTML::NotificationAgentOnline',
+    };
+
+    # --------------------------------------------------- #
+    # login and logout settings                           #
+    # --------------------------------------------------- #
+    # CustomerPanelLoginURL
+    # (If this is anything other than '', then it is assumed to be the
+    # URL of an alternate login screen which will be used in place of
+    # the default one.)
+    $Self->{CustomerPanelLoginURL} = '';
+#    $Self->{CustomerPanelLoginURL} = 'http://host.example.com/cgi-bin/login.pl';
+
+    # CustomerPanelLogoutURL
+    # (If this is anything other than '', it is assumed to be the URL
+    # of an alternate logout page which users will be sent to when they
+    # logout.)
+    $Self->{CustomerPanelLogoutURL} = '';
+#    $Self->{CustomerPanelLogoutURL} = 'http://host.example.com/cgi-bin/login.pl';
+
+    # CustomerPanelLostPassword
+    # (use lost passowrd feature)
+    $Self->{CustomerPanelLostPassword} = 1;
+
+    # CustomerPanelCreateAccount
+    # (use create cutomer account self feature)
+    $Self->{CustomerPanelCreateAccount} = 1;
+
+    # --------------------------------------------------- #
+    # notification email about new password               #
+    # --------------------------------------------------- #
+    $Self->{CustomerPanelSubjectLostPassword} = 'New eSolia OTRS Password!';
+    $Self->{CustomerPanelBodyLostPassword} = "
+Hello <OTRS_USERFIRSTNAME>,
+
+This message serves as notification that you, or someone impersonating you has 
+requested to change your OTRS password. The new password is: 
+
+<OTRS_NEWPW>
+
+You can access the eSolia OTRS system at: 
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>index.pl
+
+Thank you for using the system.
+
+Sincerely,
+Your OTRS Notification Master
+";
+
+    # --------------------------------------------------- #
+    # notification email about new account                #
+    # --------------------------------------------------- #
+    
+    $Self->{CustomerPanelSubjectNewAccount} = 'New eSolia OTRS Account!';
+    $Self->{CustomerPanelBodyNewAccount} = "
+Hello <OTRS_USERFIRSTNAME>,
+
+This message serves as notification that you, or someone impersonating you has
+created a new OTRS account (<OTRS_USERFIRSTNAME> <OTRS_USERLASTNAME>) on our system for you:
+
+Login: <OTRS_USERLOGIN>
+Password: <OTRS_USERPASSWORD>
+
+You can access the eSolia OTRS system at:
+<OTRS_CONFIG_HttpType>://<OTRS_CONFIG_FQDN>/<OTRS_CONFIG_ScriptAlias>customer.pl
+
+Sincerely,
+Your OTRS Notification Master
+";
+
+##########----- CustomerUser
+
+##########-----Ticket Core
+
+    # CustomQueue
+    # (The name of custom queue.)
+    $Self->{'Ticket::CustomQueue'} = 'My Queues';
+
+    # Ticket::ForceNewStateAfterLock
+    # (force a new ticket state after lock action)
+    $Self->{'Ticket::ForceNewStateAfterLock'} = {
+        'new' => 'open',
+    };
+
+    # Ticket::ForceUnlockAfterMove
+    # (force to unlock a ticket after move action)
+    $Self->{'Ticket::ForceUnlockAfterMove'} = 1;
+
+    # Ticket::ChangeOwnerToEveryone -> useful for ASP
+    # (Possible to change owner of ticket ot everyone) [0|1]
+    $Self->{'Ticket::ChangeOwnerToEveryone'} = 1;
+
+    # Ticket::QueueViewAllPossibleTickets
+    # (show all ro and rw queues - not just rw queues)
+    $Self->{'Ticket::QueueViewAllPossibleTickets'} = 1;
+
+##########----- TicketFreeText --(define free text options for frontend)  
+
+#    $Self->{"TicketFreeKey1"} = {
+#        '' => '-',
+#        'Product' => 'Product',
+#    };
+#    $Self->{"TicketFreeText1"} = {
+#        '' => '-',
+#        'PC' => 'PC',
+#        'Notebook' => 'Notebook',
+#        'LCD' => 'LCD',
+#        'Phone' => 'Phone',
+#    };
+#    $Self->{"TicketFreeKey2"} = {
+#        '' => '-',
+#        'Support' => 'Support',
+#    };
+
+    # default selections (if wanted)
+    # $Self->{"TicketFreeText1::DefaultSelection"} = 'Notebook';
+
+
+    $Self->{"TicketFreeKey1"} = {
+        '' => '-',
+        'Impact' => 'Impact',
+    };
+    $Self->{"TicketFreeText1"} = {
+        '' => '-',
+        'Global' => 'Global',
+        'National' => 'National',
+        'Site' => 'Site',
+        'Department' => 'Department',
+        'Single User' => 'Single User',
+    };
+    # default selection (if wanted)
+    $Self->{"TicketFreeText1::DefaultSelection"} = 'Single User';
+        
+    $Self->{"TicketFreeKey2"} = {
+        '' => '-',
+        'Component' => 'Component',
+    };
+    $Self->{"TicketFreeText2"} = {
+        '' => '-',
+        'Desktop' => 'Desktop',
+        'Laptop' => 'Laptop',
+        'Peripheral' => 'Peripheral',
+        'Printer' => 'Printer',
+        'Network' => 'Network',
+        'Server' => 'Server',
+    };
+    # Default
+    $Self->{"TicketFreeText2::DefaultSelection"} = 'Desktop';
+    
+        $Self->{"TicketFreeKey3"} = {
+        '' => '-',
+        'Work Type' => 'Work Type',
+    };
+    $Self->{"TicketFreeText3"} = {
+        '' => '-',
+        'Scheduled Maintenance' => 'Scheduled Maintenance',
+        'Reactive Troubleshooting' => 'Reactive Troubleshooting',
+        'Project' => 'Project',
+        'User Support' => 'User Support',
+        'IMAC' => 'IMAC',
+    };
+    #Default
+    $Self->{"TicketFreeText3::DefaultSelection"} = 'Scheduled Maintenance';
+
+
+##########----- Queue Creation Std Reponses
+    
+    # array of std responses
+    $Self->{StdResponse2QueueByCreating} = [
+         'empty answer',
+    ];
+    # array of std response ids
+    $Self->{StdResponseID2QueueByCreating} = [
+#        1,
+    ];
+
+##########----- Ticket Frontend
+
+    # Highligh*
+    # (Set the age and the color for highlighting of old queue
+    # in the QueueView.)
+    # highlight age1 in min
+    $Self->{HighlightAge1} = 720;
+    $Self->{HighlightColor1} = 'green';
+    # highlight age2 in min
+    $Self->{HighlightAge2} = 1440;
+    $Self->{HighlightColor2} = 'pink';
+    # highlight age3 in min
+    $Self->{HighlightAge3} = 2160;
+    $Self->{HighlightColor3} = 'orange';
+    # highlight age4in min
+    $Self->{HighlightAge4} = 2880;
+    $Self->{HighlightColor4} = 'red';
+    
+
+    # Ticket::Frontend::PendingDiffTime
+    # (Time in sec. which "pending date" shows per default) [default: 24*60*60 -=> 1d]
+    $Self->{'Ticket::Frontend::PendingDiffTime'} = 24*60*60;
+
+    # Ticket::Frontend::QueueListType
+    # (show queues in system as tree or as list) [tree|list]
+    $Self->{'Ticket::Frontend::QueueListType'} = 'tree';
+
+    # Ticket::Frontend::StdResponsesMode
+    # (should the standard responses selection be a form or links?) [Form|Link]
+    $Self->{'Ticket::Frontend::StdResponsesMode'} = 'Form';
+
+    # Ticket::Frontend::ZoomExpand
+    # (show article expanded int ticket zoom)
+    $Self->{'Ticket::Frontend::ZoomExpand'} = 0;
+
+    # Ticket::Frontend::ZoomExpandSort
+    # (show article normal or in reverse order) [normal|reverse]
+#    $Self->{'Ticket::Frontend::ZoomExpandSort'} = 'reverse';
+    $Self->{'Ticket::Frontend::ZoomExpandSort'} = 'normal';
+
+    # Ticket::Frontend::HistoryOrder
+    # (show history order reverse) [normal|reverse]
+    $Self->{'Ticket::Frontend::HistoryOrder'} = 'normal';
+#    $Self->{'Ticket::Frontend::HistoryOrder'} = 'reverse';
+
+    # Ticket::Frontend::TextAreaEmail
+    # (width of compose email windows)
+    $Self->{'Ticket::Frontend::TextAreaEmail'} = 78;
+
+    # Ticket::Frontend::TextAreaNote
+    # (width of compose note windows)
+    $Self->{'Ticket::Frontend::TextAreaNote'} = 70;
+
+    # Ticket::Frontend::CustomerInfo*
+    # (show customer user info on Compose (Phone and Email), Zoom and Queue view)
+    $Self->{'Ticket::Frontend::CustomerInfoCompose'} = 1;
+    $Self->{'Ticket::Frontend::CustomerInfoZoom'} = 1;
+    $Self->{'Ticket::Frontend::CustomerInfoQueue'} = 1;
+
+    # Ticket::Frontend::CustomerInfo*MaxSize
+    # (max size (in characters) of customer info table)
+    $Self->{'Ticket::Frontend::CustomerInfoComposeMaxSize'} = 22;
+    $Self->{'Ticket::Frontend::CustomerInfoZoomMaxSize'} = 22;
+    $Self->{'Ticket::Frontend::CustomerInfoQueueMaxSize'} = 18;
+
+##########----- Ticket Agent Interface 
+
+    # Ticket::Frontend::NoEscalationGroup
+    # (don't show escalated tickets in frontend for agents who are writable
+    # in this group)
+    $Self->{'Ticket::Frontend::NoEscalationGroup'} = 'some_group';
+
+    # Ticket::Frontend::QueueMaxShown
+    # (max shown ticket in queue view)
+    $Self->{'Ticket::Frontend::QueueMaxShown'} = 1200;
+
+    # Ticket::Frontend::QueueSortDefault
+    # (default sort order of the queue view / after priority sort)
+    # ASC: oldest on top, default
+    # DESC: youngest on top
+    $Self->{'Ticket::Frontend::QueueSortDefault'} = 'ASC';
+
+    # Ticket::Frontend::QueueSort
+    # (sort a queue ascending or descending / after priority sort)
+    #
+    # assignment: QueueID -> Value
+    # where value is one of:
+    # 0: ascending (oldest on top, default)
+    # 1: descending (youngest on top)
+    #
+#    $Self->{'Ticket::Frontend::QueueSort'} = {
+#        7 => 1,
+#        3 => 0,
+#    };
+
+    # Ticket::Frontend::AccountTime
+    # (add time accounting)
+    $Self->{'Ticket::Frontend::AccountTime'} = 1;
+
+    # Ticket::Frontend::TimeUnits
+    # (your choice of your used time units, minutes, hours, work units, ...)
+#    $Self->{'Ticket::Frontend::TimeUnits'} = ' (minutes)';
+    $Self->{'Ticket::Frontend::TimeUnits'} = ' (hours)';
+#    $Self->{'Ticket::Frontend::TimeUnits'} = ' (work units)';
+
+    # Ticket::Frontend::NeedAccountedTime
+    # (time must be accounted)
+    $Self->{'Ticket::Frontend::NeedAccountedTime'} = 0;
+
+    # Ticket::Frontend::NeedSpellCheck
+    # (compose message must be spell checked)
+    $Self->{'Ticket::Frontend::NeedSpellCheck'} = 0;
+
+    # Ticket::Frontend::BulkFeature
+    # (a agent frontend feature to work on more then one ticket
+    # at on time)
+    $Self->{'Ticket::Frontend::BulkFeature'} = 1;
+
+    # Ticket::Frontend::BulkFeatureJavaScriptAlert
+    # (enable/disable java script popup if a bulk ticket is selected)
+    $Self->{'Ticket::Frontend::BulkFeatureJavaScriptAlert'} = 1;
+
+    # Ticket::Frontend::MoveType
+    # (Show form drop down of show new page of new queues) [form|link]
+    $Self->{'Ticket::Frontend::MoveType'} = 'form';
+
+    # Ticket::Frontend::MoveSetState
+    # (Set ticket state by move)
+    $Self->{'Ticket::Frontend::MoveSetState'} = 1;
+
+    # Ticket::DefaultNextMoveStateType
+    # default move next state
+    $Self->{'Ticket::DefaultNextMoveStateType'} = ['open', 'closed'];
+
+
+    # Ticket::Frontend::StatusView
+    # (shows all open tickets)
+    $Self->{'Ticket::Frontend::StatusView::ViewableTicketsPage'} = 50;
+
+    # Ticket::Frontend::SearchLimit
+    # default limit for ticket search
+    # [default: 5000]
+    $Self->{'Ticket::Frontend::SearchLimit'} = 5000;
+
+    # Ticket::Frontend::SearchPageShown
+    # defaut of shown article a page
+    # [default: 15]
+    $Self->{'Ticket::Frontend::SearchPageShown'} = 40;
+
+    # Ticket::Frontend::SearchViewableTicketLines
+    # viewable ticket lines by search util
+    # [default: 10]
+    $Self->{'Ticket::Frontend::SearchViewableTicketLines'} = 10;
+
+    # Ticket::Frontend::SearchArticleCSVTree
+    # export also whole article tree in search result export
+    # (take care of your performance!)
+    # [default: 0]
+    $Self->{'Ticket::Frontend::SearchArticleCSVTree'} = 0;
+
+    # Ticket::Frontend::SearchCSVData
+    # (used csv data)
+    $Self->{'Ticket::Frontend::SearchCSVData'} = 
+['TicketNumber','Age','Created','State','Priority','Queue','Lock','Owner','UserFirstname','UserLastname','CustomerID','CustomerName','From','Subject','AccountedTime','TicketFreeKey1','TicketFreeText1','TicketFreeKey2','TicketFreeText2','TicketFreeKey3','TicketFreeText3','TicketFreeKey4','TicketFreeText4','TicketFreeKey5','TicketFreeText5','TicketFreeKey6','TicketFreeText6','TicketFreeKey7','TicketFreeText7','TicketFreeKey8','TicketFreeText8','ArticleTree',''];
+
+    # Ticket::Frontend::Search::DB::*
+    # (if you want to use a mirror database for agent ticket fulltext search)
+#    $Self->{'Ticket::Frontend::Search::DB::DSN'} = "DBI:mysql:database=mirrordb;host=mirrordbhost";
+#    $Self->{'Ticket::Frontend::Search::DB::User'} = "some_user";
+#    $Self->{'Ticket::Frontend::Search::DB::Password'} = "some_password";
+
+    # Ticket::AgentCanBeCustomer
+    # (use this if an agent can also be a customer via the agent interface)
+    $Self->{'Ticket::AgentCanBeCustomer'} = 0;
+
+        
+
+    
+    # ---------------------------------------------------- #
+    # ---------------------------------------------------- #
+    #                                                      #
+    #           End of your own config options!!!          #
+    #                                                      #
+    # ---------------------------------------------------- #
+    # ---------------------------------------------------- #
+}
+
+# ---------------------------------------------------- #
+# needed system stuff (don't edit this)                #
+# ---------------------------------------------------- #
+use strict;
+use vars qw(@ISA $VERSION);
+use Kernel::Config::Defaults;
+push (@ISA, 'Kernel::Config::Defaults');
+$VERSION = '$Revision: 1.15 $';
+$VERSION =~ s/^\$.*:\W(.*)\W.+?$/$1/;
+# -----------------------------------------------------#
+
+1;
+

@@ -1,0 +1,127 @@
+# =====================
+# SAI KK YAMAHA RTX1500 
+# =====================
+
+# Basics
+security class 1 on on
+console character ascii
+login timer 1200
+
+# LAN Interface Settings
+#
+ip lan1 address 192.168.0.1/24
+
+# Need to set proxyarp on if the pptp range is in the same range as the dhcp range
+# ip lan1 proxyarp on
+
+#
+# DMZ Interface Settings
+#
+ip lan3 address 61.197.227.144/29
+
+#
+# WAN Interface Settings
+#
+pp select 1
+pp always-on on
+pppoe use lan2
+pp auth accept pap chap mschap-v2
+pp auth myname is7820381@fb9.sphere.ne.jp Lapostal
+ppp lcp mru on 1454
+ppp ipcp msext on
+ip pp mtu 1454
+ip pp nat descriptor 1
+ip pp intrusion detection in on
+pp enable 1
+ip route default gateway pp 1
+
+#
+# NAT Settings
+#
+nat descriptor type 1 masquerade
+nat descriptor address outer 1 61.197.227.144
+nat descriptor address inner 1 192.168.0.1-192.168.0.254
+
+#
+# DHCP Settings
+#
+dhcp service server
+dhcp scope 1 192.168.0.50-192.168.0.100/24 gateway 192.168.0.1 expire 4320
+# DNS is option 6
+dhcp scope option 1 6=36:31:2e:31:39:37:2e:32:32:37:2e:31:34:38,32:30:32:2e:32:33:39:2e:31:31:33:2e:31:38
+# LDAP is option 95
+dhcp scope option 1 95=36:31:2e:31:39:37:2e:32:32:37:2e:31:34:39
+# WINS is option 44
+dhcp scope option 1 44=36:31:2e:31:39:37:2e:32:32:37:2e:31:34:39
+# Domain is option 15
+dhcp scope option 1 15=73:61:69:63:6f:2e:63:6f:6d
+
+#
+# DNS Settings
+# Separate servers with a space
+dns server 61.197.227.148 202.239.113.18
+dns private address spoof on
+
+#
+# Packet Filters
+#
+ip filter source-route on
+ip filter directed-broadcast on
+ip filter 1010 reject * * udp,tcp 135 *
+ip filter 1011 reject * * udp,tcp * 135
+ip filter 1012 reject * * udp,tcp netbios_ns-netbios_ssn *
+ip filter 1013 reject * * udp,tcp * netbios_ns-netbios_ssn
+ip filter 1014 reject * * udp,tcp 445 *
+ip filter 1015 reject * * udp,tcp * 445
+ip filter 1020 reject 192.168.0.0/24 *
+ip filter 1030 pass * 192.168.0.0/24 icmp
+ip filter 1031 pass * 61.197.227.145 tcpflag=0x0002/0x0fff * www
+ip filter 1032 pass * 61.197.227.146 tcpflag=0x0002/0x0fff * www
+ip filter 1033 pass * 61.197.227.147 tcpflag=0x0002/0x0fff * www
+ip filter 1034 pass * 61.197.227.148 tcpflag=0x0002/0x0fff * www
+ip filter 1035 pass * 61.197.227.149 tcpflag=0x0002/0x0fff * www
+ip filter 1036 pass * 61.197.227.150 tcpflag=0x0002/0x0fff * www
+ip filter 1037 pass * 61.197.227.148 tcpflag=0x0002/0x0fff * 21
+ip filter 1038 pass * 61.197.227.149 tcpflag=0x0002/0x0fff * 21
+ip filter 1039 pass * 61.197.227.150 tcpflag=0x0002/0x0fff * 21
+
+ip filter 1040 pass * 61.197.227.146 tcp,udp * 22,443
+ip filter 1041 pass * 61.197.227.147 tcp,udp * 22,smtp,pop3,143
+ip filter 1042 pass * 61.197.227.148 tcp,udp * 22,domain,smtp,pop3,143,443
+ip filter 1043 pass * 61.197.227.149 tcp,udp * 22,domain,443,5222,5223,8008
+
+ip filter 2000 reject * *
+ip filter 3000 pass * *
+ip filter dynamic 100 * * ftp
+ip filter dynamic 101 * * www
+ip filter dynamic 102 * * domain
+ip filter dynamic 103 * * smtp
+ip filter dynamic 104 * * pop3
+ip filter dynamic 105 * * tcp
+ip filter dynamic 106 * * udp
+ip filter dynamic 107 * * telnet
+ip filter dynamic 108 * * 22
+ip filter dynamic 109 * * 143
+ip filter dynamic 110 * * 5222
+ip filter dynamic 111 * * 5223
+ip filter dynamic 112 * * 443
+
+ip filter dynamic 200 192.168.0.0/24 * telnet
+ip filter dynamic 201 * 61.197.227.145 www
+ip filter dynamic 202 * 61.197.227.146 www
+ip filter dynamic 203 * 61.197.227.147 www
+ip filter dynamic 204 * 61.197.227.148 www
+ip filter dynamic 205 * 61.197.227.149 www
+ip filter dynamic 206 * 61.197.227.150 www
+ip filter dynamic 207 * 61.197.227.148 ftp
+ip filter dynamic 208 * 61.197.227.149 ftp
+ip filter dynamic 209 * 61.197.227.150 ftp
+
+# Leave all traffic to DMZ open from trusted
+# ip lan3 secure filter in 2000
+# ip lan3 secure filter out 3000 dynamic 100 101 200
+
+pp select 1
+ip pp secure filter in 1020 1030 1031 1032 1033 1034 1035 1036 1037 1038 1039 1040 1041 1042 1043 2000 dynamic 201 202 203 204 205 206 207 208 209
+ip pp secure filter out 1010 1011 1012 1013 1014 1015 3000 dynamic 100 101 102 103 104 105 106 107 108 109 110 111 112
+pp enable 1
