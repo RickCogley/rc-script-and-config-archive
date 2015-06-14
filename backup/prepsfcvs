@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#this script gets sourceforge tikiwiki rc1.8 via cvs and updates the 
+directory with the latest files
+
+# cd INTO the directory with the CVS folder, which marks the details
+cd /home/co0142/public_html
+
+# tell CVS what server
+export CVSROOT=:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tikiwiki
+
+# login
+cvs login
+
+# get updates - branch name etc is in CVS dir, so no spec needed here
+# cvs -z5 co -dP
+

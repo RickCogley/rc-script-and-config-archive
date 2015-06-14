@@ -1,0 +1,1 @@
+mysql -f -uco0142_admin -pPowerBox1! co0142_PRDNintra01

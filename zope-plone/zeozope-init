@@ -1,0 +1,51 @@
+#!/bin/bash
+#
+#       /etc/rc.d/init.d/zope
+
+# The following two lines are for chkconfig.  On Red Hat Linux (and
+# some other systems), you can copy or symlink this script into
+# /etc/rc.d/init.d/ and then use chkconfig(8) to automatically start
+# ZEO at boot time.
+
+# chkconfig: 345 90 10
+# description: start a ZEO server
+
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+case "$1" in
+  start)
+        echo -n 'Starting zeo daemon: '
+        /opt/zope/zeo/bin/zeoctl start
+        /opt/zope/zeo/bin/zeoctl status
+        echo -n 'Starting zope daemon: '
+        /opt/zope/client0/bin/zopectl start
+        /opt/zope/client1/bin/zopectl start
+        ;;
+  stop)
+        echo -n 'Stopping zope daemon: '
+        /opt/zope/client1/bin/zopectl stop
+        /opt/zope/client0/bin/zopectl stop
+        echo -n 'Stopping zeo daemon: '
+        /opt/zope/zeo/bin/zeoctl stop
+        /opt/zope/zeo/bin/zeoctl status
+        ;;
+  reload|restart)
+        $0 stop
+        $0 start
+        ;;
+  status)
+        echo -n 'zeo daemon: '
+        /opt/zope/zeo/bin/zeoctl status
+        echo -n 'zope daemons: '
+        /opt/zope/client0/bin/zopectl status
+        /opt/zope/client1/bin/zopectl status
+        ;;
+  *)
+        echo "Usage: /etc/rc.d/init.d/zope
+{start|stop|restart|reload|status}"
+        exit 1
+esac
+
+exit 0

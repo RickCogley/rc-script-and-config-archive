@@ -1,0 +1,2 @@
+mysql -f -uco0142_DEMOadmin -pPowerBox1! co0142_DEMOlastiki01 < 
+~/www/demo/lastiki/db/tiki_1.8to1.9.sql

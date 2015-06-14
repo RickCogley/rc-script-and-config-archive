@@ -1,0 +1,22 @@
+#!/bin/sh
+# ZEO instance control script
+
+# The following two lines are for chkconfig.  On Red Hat Linux (and
+# some other systems), you can copy or symlink this script into
+# /etc/rc.d/init.d/ and then use chkconfig(8) to automatically start
+# ZEO at boot time.
+
+# chkconfig: 345 90 10
+# description: start a ZEO server
+
+PYTHON="/usr/bin/python"
+ZODB3_HOME="/opt/zope/zope/lib/python"
+
+CONFIG_FILE="/opt/zope/zeo/etc/zeo.conf"
+
+PYTHONPATH="$ZODB3_HOME"
+export PYTHONPATH
+
+ZEOCTL="$ZODB3_HOME/ZEO/zeoctl.py"
+
+exec "$PYTHON" "$ZEOCTL" -C "$CONFIG_FILE" ${1+"$@"}

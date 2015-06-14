@@ -1,0 +1,59 @@
+#!/usr/bin/perl
+#    Last change: PFB 2003-05-17 19:36:59
+##########################################################################
+# POD Documentation
+
+=head1 PROGRAM NAME - Main WEB file for MySQL Backup (from v3.0)
+ by Peter Falkenberg Brown
+ peterbrown@worldcommunity.com
+ http://worldcommunity.com/opensource
+
+(Use this file when you run MySQL Backup from the web
+ - you don't need it if you run MySQL Backup from the
+   shell or from cron.)
+
+This file should be installed in your web tree as the
+primary 'script' file to be used to run MySQL Backup.
+
+From this file, we 'require' in the 'real' file,
+'mysql_backup.cgi', (check the name below and on your disk)
+
+which should be installed OUTSIDE!!! of your web tree,
+in the directory of your choice - usually your 'home' directory,
+which is normally ABOVE your web document root directory
+where your web 'index.html' file resides.
+
+If your HOME directory is the same as your web document root,
+you should change web providers. It's an insecure method.
+
+The rationale behind all this is for security. If the web
+server ever outputs a cgi file as text, for some unlikely
+reason, then the web visitor would only see this file's
+content, rather than the actual script.
+
+Is it necessary? Maybe not, but it doesn't hurt.
+
+=cut
+
+#######################################################################################
+
+$main_file  = '/your_home_directory/mysql_backup.3.0.cgi';
+
+if ( -e $main_file )
+        {
+        require $main_file;
+        }
+else
+        {
+        print "Content-type: text/html\n\n";
+        print qq~
+        <p><br>Error!<p>
+        Couldn't load the primary file.<br>
+        Please contact the system admin.
+        <p>
+        ~;
+        exit;
+        }
+
+#######################################################################################
+

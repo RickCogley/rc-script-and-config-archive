@@ -1,0 +1,148 @@
+#!/bin/sh
+# --
+# mm-multi.sh - a script for creating Mailman lists. 
+# Copyright (c) 2005, Rick Cogley <rick [at] esolia [dot] co [dot] jp>, eSolia Inc.
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# Get the GNU General Public License from the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# --
+
+echo "mm-multi.sh - <\$Revision: 0.1 $>"
+
+# set global variables
+MMBIN=/usr/lib/mailman/bin
+MMALIASES=/etc/mailman
+MMLISTLANG=en
+MMOWNEREMAIL=rick.cogley@esolia.co.jp
+MMADMINPASS=mm2005!
+MMDMEMBERS=/tmp/mm-multi-defaultmembers
+MMSMEMBERS=/tmp/mm-multi-smsmembers
+echo track@esolia.net >$MMDMEMBERS
+echo rick.cogley@ezweb.ne.jp >$MMSMEMBERS
+MMTMP=/tmp
+
+
+# parse user input
+# while getopts "c:" Option
+# do
+#  case $Option in
+#    c)
+#      # company short name
+#      COMPSHORTNAME=$OPTARG
+#    ;;
+#  esac
+# done
+
+echo
+echo Creating lists based on a structure...
+while [ "$x" != "y" ]; do
+  echo
+  echo Enter a short name for the client, no spaces, lowercase:
+  read CSHORTNAME
+  echo 
+  echo == SCRIPT PRESETS ==
+  echo Location of Mailman scripts: $MMBIN
+  echo Location of Mailman aliases: $MMALIASES
+  echo List language: $MMLISTLANG
+  echo List Owner Email: $MMOWNEREMAIL
+  echo List Admin Password: $MMADMINPASS
+  echo
+  echo == USER ==
+  echo Client Short Name: $CSHORTNAME
+  echo
+  echo "Is this correct? (y/n)"
+  read x
+done
+
+echo
+echo Creating lists, generating aliases, adding base members  ...
+echo
+
+echo ===
+$MMBIN/newlist -l $MMLISTLANG -q $CSHORTNAME-sales $MMOWNEREMAIL $MMADMINPASS
+$MMBIN/genaliases
+$MMBIN/add_members -r $MMDMEMBERS -w n -a n $CSHORTNAME-sales
+echo Members of $CSHORTNAME-sales:
+$MMBIN/list_members $CSHORTNAME-sales
+echo
+echo "description = '$CSHORTNAME-sales'"  >/tmp/mm-multi-$CSHORTNAME-sales-tmp
+echo "host_name = 'esolia.net'" >>/tmp/mm-multi-$CSHORTNAME-sales-tmp
+echo "max_message_size = 0" >>/tmp/mm-multi-$CSHORTNAME-sales-tmp
+echo "available_languages = ['en', 'ja']" >>/tmp/mm-multi-$CSHORTNAME-sales-tmp
+echo "accept_these_nonmembers = ['^[^@]+@(.+\\\.|)esolia\\\.co\\\.jp$', '^[^@]+@(.+\\\.|)esolia\\\.net$', '^[^@]+@(.+\\\.|)esolia\\\.org$', '^[^@]+@(.+\\\.|)esolia\\\.com$', '^[^@]+@(.+\\\.|)gmail\\\.com$']" >>/tmp/mm-multi-$CSHORTNAME-sales-tmp 
+$MMBIN/config_list -i /tmp/mm-multi-$CSHORTNAME-sales-tmp $CSHORTNAME-sales 
+echo
+$MMBIN/withlist -l -r fix_url $CSHORTNAME-sales -u www.esolia.net -v
+echo
+
+echo ===
+$MMBIN/newlist -l $MMLISTLANG -q $CSHORTNAME-memo $MMOWNEREMAIL $MMADMINPASS
+$MMBIN/genaliases
+$MMBIN/add_members -r $MMDMEMBERS -w n -a n $CSHORTNAME-memo
+echo Members of $CSHORTNAME-memo:
+$MMBIN/list_members $CSHORTNAME-memo
+echo
+echo "description = '$CSHORTNAME-memo'"  >/tmp/mm-multi-$CSHORTNAME-memo-tmp
+echo "host_name = 'esolia.net'" >>/tmp/mm-multi-$CSHORTNAME-memo-tmp
+echo "max_message_size = 0" >>/tmp/mm-multi-$CSHORTNAME-memo-tmp
+echo "available_languages = ['en', 'ja']" >>/tmp/mm-multi-$CSHORTNAME-memo-tmp
+echo "accept_these_nonmembers = ['^[^@]+@(.+\\\.|)esolia\\\.co\\\.jp$', '^[^@]+@(.+\\\.|)esolia\\\.net$', '^[^@]+@(.+\\\.|)esolia\\\.org$', '^[^@]+@(.+\\\.|)esolia\\\.com$', '^[^@]+@(.+\\\.|)gmail\\\.com$']" >>/tmp/mm-multi-$CSHORTNAME-memo-tmp
+$MMBIN/config_list -i /tmp/mm-multi-$CSHORTNAME-memo-tmp $CSHORTNAME-memo 
+echo
+$MMBIN/withlist -l -r fix_url $CSHORTNAME-memo -u www.esolia.net -v
+echo
+
+echo ===
+$MMBIN/newlist -l $MMLISTLANG -q $CSHORTNAME-support $MMOWNEREMAIL $MMADMINPASS
+$MMBIN/genaliases
+$MMBIN/add_members -r $MMDMEMBERS -w n -a n $CSHORTNAME-support
+echo Members of $CSHORTNAME-support:
+$MMBIN/list_members $CSHORTNAME-support
+echo
+echo "description = '$CSHORTNAME-support'"  >/tmp/mm-multi-$CSHORTNAME-support-tmp
+echo "host_name = 'esolia.net'" >>/tmp/mm-multi-$CSHORTNAME-support-tmp
+echo "max_message_size = 0" >>/tmp/mm-multi-$CSHORTNAME-support-tmp
+echo "available_languages = ['en', 'ja']" >>/tmp/mm-multi-$CSHORTNAME-support-tmp
+echo "accept_these_nonmembers = ['^[^@]+@(.+\\\.|)esolia\\\.co\\\.jp$', '^[^@]+@(.+\\\.|)esolia\\\.net$', '^[^@]+@(.+\\\.|)esolia\\\.org$', '^[^@]+@(.+\\\.|)esolia\\\.com$', '^[^@]+@(.+\\\.|)gmail\\\.com$']" >>/tmp/mm-multi-$CSHORTNAME-support-tmp
+$MMBIN/config_list -i /tmp/mm-multi-$CSHORTNAME-support-tmp $CSHORTNAME-support 
+echo
+$MMBIN/withlist -l -r fix_url $CSHORTNAME-support -u www.esolia.net -v
+echo
+
+echo ===
+$MMBIN/newlist -l $MMLISTLANG -q $CSHORTNAME-911 $MMOWNEREMAIL $MMADMINPASS
+$MMBIN/genaliases
+$MMBIN/add_members -r $MMDMEMBERS -w n -a n $CSHORTNAME-911
+$MMBIN/add_members -r $MMSMEMBERS -w n -a n $CSHORTNAME-911
+echo Members of $CSHORTNAME-911:
+$MMBIN/list_members $CSHORTNAME-911
+echo
+echo "description = '$CSHORTNAME-911'"  >/tmp/mm-multi-$CSHORTNAME-911-tmp
+echo "host_name = 'esolia.net'" >>/tmp/mm-multi-$CSHORTNAME-911-tmp
+echo "max_message_size = 0" >>/tmp/mm-multi-$CSHORTNAME-911-tmp
+echo "available_languages = ['en', 'ja']" >>/tmp/mm-multi-$CSHORTNAME-911-tmp
+echo "accept_these_nonmembers = ['^[^@]+@(.+\\\.|)esolia\\\.co\\\.jp$', '^[^@]+@(.+\\\.|)esolia\\\.net$', '^[^@]+@(.+\\\.|)esolia\\\.org$', '^[^@]+@(.+\\\.|)esolia\\\.com$', '^[^@]+@(.+\\\.|)gmail\\\.com$']" >>/tmp/mm-multi-$CSHORTNAME-911-tmp
+$MMBIN/config_list -i /tmp/mm-multi-$CSHORTNAME-911-tmp $CSHORTNAME-911 
+echo
+$MMBIN/withlist -l -r fix_url $CSHORTNAME-911 -u www.esolia.net -v
+echo
+
+echo =========================
+echo Lists Just Created: 
+echo
+$MMBIN/list_lists |grep $CSHORTNAME
+
+# cleanup
+rm -f /tmp/mm-multi*
+
+exit 0

@@ -1,0 +1,113 @@
+#!/bin/sh
+# --
+# mm-multi.sh - a script for creating multiple Mailman lists from a 
+# common base string.
+#  
+# Copyright (c) 2005, Rick Cogley 
+# <rick [at] esolia [dot] co [dot] jp>, eSolia Inc.
+#
+# This program is free software; you can redistribute it and/or modify 
+# it under the terms of the GNU General Public License as published by 
+# the Free Software Foundation; either version 2 of the License, or 
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, 
+# but WITHOUT ANY WARRANTY; without even the implied warranty of 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+# GNU General Public License for more details.
+#
+# Get the GNU General Public License from the Free Software 
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+# --
+
+echo "mm-multi.sh - <\$Revision: 0.1 $>"
+
+# set global variables
+MMBIN=/usr/lib/mailman/bin
+MMALIASES=/etc/mailman
+MMLISTLANG=en
+MMOWNEREMAIL=rick.cogley@esolia.co.jp
+MMADMINPASS=mm2005!
+MMDEFURLHOST=www.esolia.net
+MMDEFEMAILHOST=esolia.net
+MMDMEMBERS=/tmp/mm-defaultmembers
+MMSMEMBERS=/tmp/mm-smsmembers
+echo track@esolia.net >$MMDMEMBERS
+echo rick.cogley@ezweb.ne.jp >$MMSMEMBERS MMTMP=/tmp
+
+# parse user input
+# while getopts "c:" Option
+# do
+#  case $Option in
+#    c)
+#      # company short name
+#      COMPSHORTNAME=$OPTARG
+#    ;;
+#  esac
+# done
+
+echo
+echo Creating lists based on a structure...
+while [ "$x" != "y" ]; do
+  echo
+  echo Enter a short name for the client, no spaces, lowercase:
+  read CSN
+  echo
+  echo == SCRIPT PRESETS ==
+  echo Default URL Host: $MMDEFURLHOST
+  echo Defautl EMAIL Host: $MMDEFEMAILHOST
+  echo Location of Mailman scripts: $MMBIN
+  echo Location of Mailman aliases: $MMALIASES
+  echo List language: $MMLISTLANG
+  echo List Owner Email: $MMOWNEREMAIL
+  echo List Admin Password: $MMADMINPASS
+  echo
+  echo == USER ==
+  echo Client Short Name: $CSN
+  echo
+  echo "Is this correct? (y/n)"
+  read x
+done
+
+echo
+echo Creating lists, generating aliases, adding base members  ...
+echo
+
+#!/bin/bash 
+for i in support 911 memo sales
+do 
+    echo ===== $CSN-$i =====
+    echo
+    echo Creating list: $CSN-$i
+     # This is 2.1.5 newlist Syntax using arcane list@urlhost syntax
+    $MMBIN/newlist -l $MMLISTLANG -q $CSN-$i@$MMDEFURLHOST $MMOWNEREMAIL $MMADMINPASS 
+     # The 2.1.6 syntax will apparently be: 
+     # /path/to/newlist -l en -q -u www.mydom.net listname ownermail pass
+    echo Generating Aliases...
+    $MMBIN/genaliases
+    echo Adding Members... 
+    $MMBIN/add_members -r $MMDMEMBERS -w n -a n $CSN-$i
+    echo Members of $CSN-$i:
+    $MMBIN/list_members $CSN-$i
+    echo Creating file for config_list...
+    echo "description = '$CSN-$i'" >/tmp/mm-$CSN-$i
+    echo "host_name = '$MMDEFEMAILHOST'" >>/tmp/mm-$CSN-$i
+    echo "max_message_size = 0" >>/tmp/mm-$CSN-$i
+    echo "available_languages = ['en', 'ja']" >>/tmp/mm-$CSN-$i
+    echo "accept_these_nonmembers = ['^[^@]+@(.+\\\.|)esolia\\\.co\\\.jp$', '^[^@]+@(.+\\\.|)esolia\\\.net$', '^[^@]+@(.+\\\.|)esolia\\\.org$', '^[^@]+@(.+\\\.|)esolia\\\.com$', '^[^@]+@(.+\\\.|)gmail\\\.com$']" >>/tmp/mm-$CSN-$i
+    echo Configuring list...
+    $MMBIN/config_list -i /tmp/mm-$CSN-$i $CSN-$i
+    # $MMBIN/withlist -l -r fix_url $CSN-$i -u www.esolia.net -v 
+    echo
+done 
+
+echo =========================
+echo Lists Just Created: 
+echo
+$MMBIN/list_lists |grep $CSN
+
+# cleanup
+rm -f /tmp/mm-*
+
+exit 0
+

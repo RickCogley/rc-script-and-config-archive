@@ -1,0 +1,3 @@
+./roundup-server -C /opt/roundup/trackers/support/config.ini -l /opt/roundup/log/roundup.log -d 
+/opt/roundup/trackers/support/db/roundup-support.pid -u roundup -g roundup support=/opt/roundup/trackers/support
+

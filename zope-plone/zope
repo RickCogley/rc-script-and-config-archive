@@ -1,0 +1,77 @@
+#!/bin/sh
+# Startup script for Zope
+#
+# chkconfig: 345 80 20
+# description: Zope, a web application server
+#
+# config: $instance/etc/zope.conf
+
+# Source function library.
+. /etc/init.d/functions
+
+RETVAL=0
+zopectl="/usr/bin/zopectl"
+user="zope"
+prog="zope"
+
+start() {
+        output=`$zopectl -u $user start`
+        # the return status of zopectl is not reliable, we need to parse
+        # its output via substring match
+        if echo $output | grep -q "started"; then
+            # success
+            action $"Starting $prog:  " /bin/true
+            touch /var/lock/subsys/$prog
+            RETVAL=0
+        else
+            # failed
+            action $"Starting $prog:  " /bin/false
+            RETVAL=1
+        fi
+        return $RETVAL
+}
+
+stop() {
+        output=`$zopectl -u $user stop`
+        # the return status of zopectl is not reliable, we need to parse
+        # its output via substring match
+        if echo $output | grep -q "stopped"; then
+            # success
+            action $"Stopping $prog:  " /bin/true
+            rm -f /var/lock/subsys/$prog
+            RETVAL=0
+        else
+            # failed
+            action $"Stopping $prog:  " /bin/false
+            RETVAL=1
+        fi
+        return $RETVAL
+}
+
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  status)
+	$zopectl status
+	;;
+  restart)
+	restart
+	;;
+  condrestart)
+	[ -e /var/lock/subsys/$prog ] && restart
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|status|restart|condrestart}"
+	RETVAL=1
+esac
+
+exit $REVAL

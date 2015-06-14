@@ -1,0 +1,102 @@
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<ticket><requester-email>noreply@cookmedical.com</requester-email></ticket>" -X PUT https://support.esolia.net/tickets/7898.xml
+
+<ticket><requester-email>mike@nowhere.com</requester-email></ticket>
+
+curl -u rick.cogley@esolia.co.jp:myzendeskpass -H "Content-Type: application/xml" -d "<user><is-verified>true</is-verified></user>" -X PUT https://support.esolia.net/users/4362015.xml
+
+curl -u rick.cogley@esolia.co.jp:eSolia1! -X GET https://support.esolia.net/groups.xml
+curl -u rick.cogley@esolia.co.jp:eSolia1! -X GET https://support.esolia.net/organizations.xml
+
+
+44804
+
+<group-id>2</group-id>
+
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@amorepacific.co.jp</email><name>Amore Pacific Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>46276</organization-id></user>" -X POST https://support.esolia.net/users.xml
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@cresc-p.com</email><name>Crescent Partners Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>46274</organization-id></user>" -X POST https://support.esolia.net/users.xml
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@fei.com</email><name>FEI Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>46271</organization-id></user>" -X POST https://support.esolia.net/users.xml
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@lazard.com</email><name>Lazard Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>46273</organization-id></user>" -X POST https://support.esolia.net/users.xml
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@lemaitre.com</email><name>LeMaitre Vascular Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>46275</organization-id></user>" -X POST https://support.esolia.net/users.xml
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@sullcrom.com</email><name>Sullivan and Cromwell Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>46277</organization-id></user>" -X POST https://support.esolia.net/users.xml
+
+
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@DOMAIN</email><name>CLIENT NAME Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>ORGID</organization-id></user>" -X POST https://support.esolia.net/users.xml
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@DOMAIN</email><name>CLIENT NAME Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>ORGID</organization-id></user>" -X POST https://support.esolia.net/users.xml
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@DOMAIN</email><name>CLIENT NAME Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>ORGID</organization-id></user>" -X POST https://support.esolia.net/users.xml
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@DOMAIN</email><name>CLIENT NAME Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>ORGID</organization-id></user>" -X POST https://support.esolia.net/users.xml
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@DOMAIN</email><name>CLIENT NAME Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>ORGID</organization-id></user>" -X POST https://support.esolia.net/users.xml
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@DOMAIN</email><name>CLIENT NAME Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>ORGID</organization-id></user>" -X POST https://support.esolia.net/users.xml
+curl -u rick.cogley@esolia.co.jp:eSolia1! -H "Content-Type: application/xml" -d "<user><email>noreply@DOMAIN</email><name>CLIENT NAME Requester</name><roles>0</roles><restriction-id>2</restriction-id><organization-id>ORGID</organization-id></user>" -X POST https://support.esolia.net/users.xml
+
+
+
+curl -u rick.cogley@esolia.co.jp:eSolia1! -X GET https://support.esolia.net/users/5795399.xml
+
+<user>
+  <created-at type="datetime">2009-11-11T15:50:47+09:00</created-at>
+  <details></details>
+  <email>noreply@cookmedical.com</email>
+  <external-id nil="true"></external-id>
+  <id type="integer">5795399</id>
+  <is-active type="boolean">true</is-active>
+  <is-private-comments-only type="boolean">false</is-private-comments-only>
+  <is-verified type="boolean">true</is-verified>
+  <last-login type="datetime" nil="true"></last-login>
+  <locale-id type="integer" nil="true"></locale-id>
+  <name>Cook Japan Requester</name>
+  <notes></notes>
+  <openid-url nil="true"></openid-url>
+  <organization-id type="integer">44804</organization-id>
+  <phone></phone>
+  <restriction-id type="integer">2</restriction-id>
+  <roles type="integer">0</roles>
+  <time-zone>Tokyo</time-zone>
+  <updated-at type="datetime">2009-11-11T15:50:59+09:00</updated-at>
+  <uses-12-hour-clock type="boolean">false</uses-12-hour-clock>
+  <groups type="array"/>
+</user>
+
+
+
+
+wind:~ administrator$ curl -u rick.cogley@esolia.co.jp:eSolia1! -X GET https://support.esolia.net/organizations.xml
+
+
+  <organization>
+    <created-at type="datetime">2009-09-13T23:08:15+09:00</created-at>
+    <default>sullcrom.com</default>
+    <delta type="boolean">false</delta>
+    <details></details>
+    <details-html nil="true"></details-html>
+    <group-id type="integer" nil="true"></group-id>
+    <id type="integer">46277</id>
+    <is-shared type="boolean">false</is-shared>
+    <is-shared-comments type="boolean">false</is-shared-comments>
+    <name>Sullivan Cromwell</name>
+    <notes></notes>
+    <notes-html nil="true"></notes-html>
+    <updated-at type="datetime">2009-09-13T23:08:15+09:00</updated-at>
+  </organization>
+</organizations>
+
+
+
+User at Organization
+Email
+
+Cook Japan Requester at Cook
+noreply@cookmedical.com
+
+Amore Pacific Requester at Amore Pacific
+noreply@amorepacific.co.jp
+
+Crescent Partners Requester at Crescent Partners
+noreply@cresc-p.com
+
+FEI Requester at FEI
+noreply@fei.com
+
+Lazard Requester at Lazard
+noreply@lazard.com
+
+
